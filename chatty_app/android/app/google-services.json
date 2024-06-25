@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "932132120928",
+    "project_id": "communi-52801",
+    "storage_bucket": "communi-52801.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932132120928:android:bdc7f2824af6c2c1c91605",
+        "android_client_info": {
+          "package_name": "com.example.chatty_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-aJotx7w0PkzGVSPvMbP71hgDKLjHmB8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
