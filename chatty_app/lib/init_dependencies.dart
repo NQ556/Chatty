@@ -1,12 +1,14 @@
 import 'package:chatty_app/features/auth/data/datasources/auth_data_source.dart';
 import 'package:chatty_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:chatty_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:chatty_app/features/auth/domain/usecases/user_reset_password.dart';
+import 'package:chatty_app/features/auth/domain/usecases/user_sign_in.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:chatty_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:chatty_app/firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -19,10 +21,10 @@ Future<void> initDependencies() async {
   );
 
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  FirebaseDatabase firebaseDatabase = FirebaseDatabase.instance;
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   getIt.registerLazySingleton(() => firebaseAuth);
-  getIt.registerLazySingleton(() => firebaseDatabase);
+  getIt.registerLazySingleton(() => firebaseFirestore);
 }
 
 void _initAuth() {
@@ -45,9 +47,23 @@ void _initAuth() {
     ),
   );
 
+  getIt.registerFactory(
+    () => UserSignIn(
+      getIt(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => UserResetPassword(
+      getIt(),
+    ),
+  );
+
   getIt.registerLazySingleton(
     () => AuthBloc(
       userSignUp: getIt(),
+      userSignIn: getIt(),
+      userResetPassword: getIt(),
     ),
   );
 }

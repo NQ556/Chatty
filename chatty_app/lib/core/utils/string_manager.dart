@@ -10,4 +10,8 @@ class StringManager {
   static const String username = "Username";
   static const String confirmed = "Confirmed password";
   static const String back = "Back";
+
+  static const String forgotText =
+      "Please enter your email and we will send you a password reset link";
+  static const String confirm = "Confirm";
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:chatty_app/core/common/entities/user.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FirebaseAuth;
 
@@ -25,6 +27,29 @@ class UserModel extends User {
       'avatarUrl': avatarUrl,
     };
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'username': username,
+      'email': email,
+      'avatarUrl': avatarUrl,
+    };
+  }
+
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      id: '',
+      username: map['username'] as String,
+      email: map['email'] as String,
+      avatarUrl: map['avatarUrl'] as String,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory UserModel.fromJson(String source) =>
+      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   UserModel copyWith({
     String? id,

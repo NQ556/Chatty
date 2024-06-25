@@ -3,63 +3,41 @@ import 'package:chatty_app/core/common/widgets/loader.dart';
 import 'package:chatty_app/core/common/widgets/rounded_button.dart';
 import 'package:chatty_app/core/utils/asset_manager.dart';
 import 'package:chatty_app/core/utils/color_manager.dart';
+import 'package:chatty_app/core/utils/font_manager.dart';
 import 'package:chatty_app/core/utils/route_manager.dart';
 import 'package:chatty_app/core/utils/string_manager.dart';
 import 'package:chatty_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:chatty_app/features/auth/presentation/widgets/auth_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final formKey = GlobalKey<FormState>();
-
-  final usernameController = TextEditingController();
   final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmedController = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
 
-    usernameController.dispose();
     emailController.dispose();
-    passwordController.dispose();
-    confirmedController.dispose();
   }
 
-  void _onSignUpPressed() {
+  void _onResetPasswordPressed() {
     if (formKey.currentState!.validate()) {
-      String password = passwordController.text;
-      String confirmPassword = confirmedController.text;
-
-      if (password == confirmPassword) {
-        context.read<AuthBloc>().add(
-              AuthSignUp(
-                username: usernameController.text.trim(),
-                email: emailController.text.trim(),
-                password: passwordController.text,
-              ),
-            );
-      } else {
-        showSnackBar(context, "The passwords must be the same.");
-      }
+      context.read<AuthBloc>().add(
+            AuthResetPassword(
+              email: emailController.text.toString(),
+            ),
+          );
     }
-  }
-
-  void _onSuccessSignUp() {
-    usernameController.clear();
-    emailController.clear();
-    passwordController.clear();
-    confirmedController.clear();
-    showSnackBar(context, "Sign up successfully!");
   }
 
   @override
@@ -81,8 +59,9 @@ class _SignUpPageState extends State<SignUpPage> {
             listener: (context, state) {
               if (state is AuthFailure) {
                 showSnackBar(context, state.message);
-              } else if (state is AuthSuccess) {
-                _onSuccessSignUp();
+              } else if (state is ResetSuccess) {
+                emailController.clear();
+                showSnackBar(context, "Sent reset link successfully!");
               }
             },
             builder: (context, state) {
@@ -112,45 +91,30 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                       ),
 
-                      // Sized box
+                      //
                       SizedBox(
                         height: 50,
                       ),
 
-                      // Sign up
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 20),
-                          child: Text(
-                            StringManager.signUp,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineMedium!
-                                .copyWith(
-                                  color: ColorManager.primary,
-                                ),
-                          ),
+                      // Image
+                      Container(
+                        child: SvgPicture.asset(
+                          ImageManager.forgotImage,
                         ),
                       ),
 
-                      // Sized box
-                      SizedBox(
-                        height: 30,
-                      ),
-
-                      // Input email
+                      // Instruct text
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 50),
-                        child: AuthInput(
-                          hintText: StringManager.username,
-                          textEditingController: usernameController,
+                        padding: const EdgeInsets.symmetric(vertical: 30),
+                        child: Text(
+                          StringManager.forgotText,
+                          textAlign: TextAlign.center,
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    color: ColorManager.primary,
+                                    fontWeight: FontWeightManager.bold,
+                                  ),
                         ),
-                      ),
-
-                      // Sized box
-                      SizedBox(
-                        height: 30,
                       ),
 
                       // Input email
@@ -162,47 +126,17 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                       ),
 
-                      // Sized box
+                      //
                       SizedBox(
-                        height: 30,
+                        height: 60,
                       ),
 
-                      // Input password
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 50),
-                        child: AuthInput(
-                          hintText: StringManager.password,
-                          textEditingController: passwordController,
-                          isObscure: true,
-                        ),
-                      ),
-
-                      // Sized box
-                      SizedBox(
-                        height: 30,
-                      ),
-
-                      // Input confirmed password
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 50),
-                        child: AuthInput(
-                          hintText: StringManager.confirmed,
-                          textEditingController: confirmedController,
-                          isObscure: true,
-                        ),
-                      ),
-
-                      // Sized box
-                      SizedBox(
-                        height: 50,
-                      ),
-
-                      // Sign up Button
+                      // Confirm Button
                       RoundedButton(
-                        buttonText: StringManager.signUp,
+                        buttonText: StringManager.confirm,
                         backgroundColor: ColorManager.primary50,
                         textColor: Colors.white,
-                        onTap: _onSignUpPressed,
+                        onTap: _onResetPasswordPressed,
                       ),
 
                       // Sized box
