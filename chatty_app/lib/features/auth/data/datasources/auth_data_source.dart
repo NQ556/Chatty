@@ -18,6 +18,8 @@ abstract interface class AuthDataSource {
   Future<void> resetPassword({
     required String email,
   });
+
+  Future<UserModel?> getCurrentUserData();
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -28,6 +30,19 @@ class AuthDataSourceImpl implements AuthDataSource {
     this._firebaseAuth,
     this._firebaseFirestore,
   );
+
+  Future<UserModel> _getUserData(String userUID) async {
+    // Get user's information from database
+    final userInfo =
+        await _firebaseFirestore.collection('users').doc(userUID).get();
+
+    // Fail fetch data
+    if (userInfo.data() == null) {
+      throw const ServerException("Null User!");
+    }
+
+    return UserModel.fromMap(userInfo.data()!).copyWith(id: userUID);
+  }
 
   @override
   Future<UserModel> signUpWithEmail({
@@ -81,19 +96,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         throw const ServerException("Null User!");
       }
 
-      // Get user's information from database
-      final userInfo = await _firebaseFirestore
-          .collection('users')
-          .doc(response.user!.uid)
-          .get();
-
-      // Fail fetch data
-      if (userInfo.data() == null) {
-        throw const ServerException("Null User!");
-      }
-
-      return UserModel.fromMap(userInfo.data()!)
-          .copyWith(id: response.user!.uid);
+      return _getUserData(response.user!.uid);
     } catch (e) {
       throw ServerException(e.toString());
     }
@@ -105,6 +108,19 @@ class AuthDataSourceImpl implements AuthDataSource {
   }) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<UserModel?> getCurrentUserData() async {
+    try {
+      if (_firebaseAuth.currentUser != null) {
+        return _getUserData(_firebaseAuth.currentUser!.uid);
+      }
+
+      return null;
     } catch (e) {
       throw ServerException(e.toString());
     }

@@ -1,7 +1,10 @@
+import 'package:chatty_app/core/common/cubit/app_user_cubit.dart';
 import 'package:chatty_app/core/utils/route_manager.dart';
 import 'package:chatty_app/core/utils/theme_manager.dart';
 import 'package:chatty_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:chatty_app/features/auth/presentation/pages/sign_in_page.dart';
+import 'package:chatty_app/features/navigation/presentation/bloc/nav_bloc.dart';
+import 'package:chatty_app/features/navigation/presentation/pages/home_page.dart';
 import 'package:chatty_app/init_dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +16,13 @@ void main() async {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(
+        create: (_) => getIt<AppUserCubit>(),
+      ),
+      BlocProvider(
         create: (_) => getIt<AuthBloc>(),
+      ),
+      BlocProvider(
+        create: (_) => getIt<NavBloc>(),
       ),
     ],
     child: const MyApp(),
@@ -33,7 +42,18 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RouteGenerator.getRoute,
-      home: SignInPage(),
+      home: BlocSelector<AppUserCubit, AppUserState, bool>(
+        selector: (state) {
+          return state is AppUserSignedIn;
+        },
+        builder: (context, state) {
+          if (state) {
+            return HomePage();
+          } else {
+            return SignInPage();
+          }
+        },
+      ),
       theme: getApplicationTheme(),
     );
   }

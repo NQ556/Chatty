@@ -1,5 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:chatty_app/core/common/cubit/app_user_cubit.dart';
 import 'package:chatty_app/core/common/entities/user.dart';
+import 'package:chatty_app/core/usecase/usecase.dart';
+import 'package:chatty_app/features/auth/domain/usecases/user_get_current.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_reset_password.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_sign_in.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_sign_up.dart';
@@ -12,14 +15,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserSignUp _userSignUp;
   final UserSignIn _userSignIn;
   final UserResetPassword _userResetPassword;
+  final UserGetCurrent _userGetCurrentData;
+  final AppUserCubit _appUserCubit;
 
   AuthBloc({
     required UserSignUp userSignUp,
     required UserSignIn userSignIn,
     required UserResetPassword userResetPassword,
+    required UserGetCurrent userGetCurrentData,
+    required AppUserCubit appUserCubit,
   })  : _userSignUp = userSignUp,
         _userSignIn = userSignIn,
         _userResetPassword = userResetPassword,
+        _userGetCurrentData = userGetCurrentData,
+        _appUserCubit = appUserCubit,
         super(AuthInitial()) {
     on<AuthEvent>((_, emit) {
       emit(AuthLoading());
@@ -27,6 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignUp>(_onAuthSignUp);
     on<AuthSignIn>(_onAuthSignIn);
     on<AuthResetPassword>(_onAuthReset);
+    on<AuthGetCurrentUserData>(_onGetCurrentUserData);
   }
 
   void _onAuthSignUp(
@@ -80,11 +90,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
+  void _onGetCurrentUserData(
+    AuthGetCurrentUserData event,
+    Emitter<AuthState> emit,
+  ) async {
+    final response = await _userGetCurrentData.call(NoParams());
+
+    response.fold(
+      (failure) => emit(AuthFailure(failure.message)),
+      (user) => _emitAuthSuccess(user, emit),
+    );
+  }
+
   void _emitAuthSuccess(
     User user,
     Emitter<AuthState> emit,
   ) {
-    //_appUserCubit.updateUser(user);
+    _appUserCubit.updateUser(user);
     emit(AuthSuccess(user));
   }
 }

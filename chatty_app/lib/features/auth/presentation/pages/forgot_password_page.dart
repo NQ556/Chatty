@@ -50,7 +50,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
-                ImageManager.background,
+                AssetManager.background,
               ),
               fit: BoxFit.cover,
             ),
@@ -99,7 +99,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       // Image
                       Container(
                         child: SvgPicture.asset(
-                          ImageManager.forgotImage,
+                          AssetManager.forgotImage,
                         ),
                       ),
 

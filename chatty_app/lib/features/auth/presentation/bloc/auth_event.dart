@@ -32,3 +32,5 @@ final class AuthResetPassword extends AuthEvent {
     required this.email,
   });
 }
+
+final class AuthGetCurrentUserData extends AuthEvent {}

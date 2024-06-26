@@ -18,3 +18,8 @@ final class AuthFailure extends AuthState {
 }
 
 final class ResetSuccess extends AuthState {}
+
+final class SignInCheck extends AuthState {
+  final bool result;
+  SignInCheck(this.result);
+}

@@ -72,7 +72,7 @@ class _SignUpPageState extends State<SignUpPage> {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
-                ImageManager.background,
+                AssetManager.background,
               ),
               fit: BoxFit.cover,
             ),
