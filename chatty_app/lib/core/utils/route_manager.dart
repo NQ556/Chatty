@@ -2,6 +2,7 @@ import 'package:chatty_app/features/auth/presentation/pages/forgot_password_page
 import 'package:chatty_app/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:chatty_app/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:chatty_app/features/navigation/presentation/pages/home_page.dart';
+import 'package:chatty_app/features/profile/presentation/pages/edit_page.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -9,6 +10,7 @@ class Routes {
   static const String signUpRoute = "/signUp";
   static const String forgotRoute = "/forgot";
   static const String homeRoute = "/home";
+  static const String editRoute = "/edit";
 }
 
 class RouteGenerator {
@@ -29,6 +31,10 @@ class RouteGenerator {
       case Routes.homeRoute:
         return MaterialPageRoute(
           builder: (_) => HomePage(),
+        );
+      case Routes.editRoute:
+        return MaterialPageRoute(
+          builder: (_) => EditPage(),
         );
       default:
         return unDefinedRoute();

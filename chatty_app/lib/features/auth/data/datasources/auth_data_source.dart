@@ -20,6 +20,8 @@ abstract interface class AuthDataSource {
   });
 
   Future<UserModel?> getCurrentUserData();
+
+  Future<void> signOutAccount();
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -121,6 +123,15 @@ class AuthDataSourceImpl implements AuthDataSource {
       }
 
       return null;
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> signOutAccount() async {
+    try {
+      await _firebaseAuth.signOut();
     } catch (e) {
       throw ServerException(e.toString());
     }

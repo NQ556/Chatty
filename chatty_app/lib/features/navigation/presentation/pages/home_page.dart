@@ -3,6 +3,7 @@ import 'package:chatty_app/features/conversation/presentation/pages/conversation
 import 'package:chatty_app/features/friends/presentation/pages/friends_page.dart';
 import 'package:chatty_app/features/navigation/presentation/bloc/nav_bloc.dart';
 import 'package:chatty_app/features/navigation/presentation/widgets/bottom_nav.dart';
+import 'package:chatty_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,11 +21,12 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNav(),
       body: BlocBuilder<NavBloc, NavState>(
         builder: (context, state) {
-          print(state);
           if (state is ConversationState || state is NavInitial) {
             return ConversationPage();
           } else if (state is FriendsState) {
             return FriendsPage();
+          } else if (state is ProfileState) {
+            return ProfilePage();
           }
           return Loader();
         },

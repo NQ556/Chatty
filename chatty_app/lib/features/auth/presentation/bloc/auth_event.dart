@@ -34,3 +34,5 @@ final class AuthResetPassword extends AuthEvent {
 }
 
 final class AuthGetCurrentUserData extends AuthEvent {}
+
+final class AuthSignOut extends AuthEvent {}

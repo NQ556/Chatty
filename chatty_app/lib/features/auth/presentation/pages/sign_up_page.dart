@@ -62,6 +62,10 @@ class _SignUpPageState extends State<SignUpPage> {
     showSnackBar(context, "Sign up successfully!");
   }
 
+  void _onReturnPressed() {
+    Navigator.pushReplacementNamed(context, Routes.signInRoute);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -215,10 +219,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         buttonText: StringManager.back,
                         backgroundColor: Colors.white.withOpacity(0.5),
                         textColor: ColorManager.primary,
-                        onTap: () {
-                          Navigator.pushReplacementNamed(
-                              context, Routes.signInRoute);
-                        },
+                        onTap: _onReturnPressed,
                       ),
                     ],
                   ),

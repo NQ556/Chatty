@@ -14,4 +14,12 @@ class StringManager {
   static const String forgotText =
       "Please enter your email and we will send you a password reset link";
   static const String confirm = "Confirm";
+
+  static const String startChat = "Let’s start chatting";
+
+  static const String edit = "Edit";
+  static const String hobbies = "Hobbies";
+  static const String description = "Description";
+  static const String signOut = "Sign Out";
+  static const String save = "Save";
 }

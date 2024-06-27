@@ -5,6 +5,7 @@ import 'package:chatty_app/core/usecase/usecase.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_get_current.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_reset_password.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_sign_in.dart';
+import 'package:chatty_app/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:meta/meta.dart';
 
@@ -17,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserResetPassword _userResetPassword;
   final UserGetCurrent _userGetCurrentData;
   final AppUserCubit _appUserCubit;
+  final UserSignOut _userSignOut;
 
   AuthBloc({
     required UserSignUp userSignUp,
@@ -24,11 +26,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required UserResetPassword userResetPassword,
     required UserGetCurrent userGetCurrentData,
     required AppUserCubit appUserCubit,
+    required UserSignOut userSignOut,
   })  : _userSignUp = userSignUp,
         _userSignIn = userSignIn,
         _userResetPassword = userResetPassword,
         _userGetCurrentData = userGetCurrentData,
         _appUserCubit = appUserCubit,
+        _userSignOut = userSignOut,
         super(AuthInitial()) {
     on<AuthEvent>((_, emit) {
       emit(AuthLoading());
@@ -37,6 +41,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignIn>(_onAuthSignIn);
     on<AuthResetPassword>(_onAuthReset);
     on<AuthGetCurrentUserData>(_onGetCurrentUserData);
+    on<AuthSignOut>(_onUserSignOut);
   }
 
   void _onAuthSignUp(
@@ -99,6 +104,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     response.fold(
       (failure) => emit(AuthFailure(failure.message)),
       (user) => _emitAuthSuccess(user, emit),
+    );
+  }
+
+  void _onUserSignOut(AuthSignOut event, Emitter<AuthState> emit) async {
+    final response = await _userSignOut.call(NoParams());
+
+    response.fold(
+      (failure) => emit(
+        AuthFailure(failure.message),
+      ),
+      (_) => emit(
+        SignOutSuccess(),
+      ),
     );
   }
 

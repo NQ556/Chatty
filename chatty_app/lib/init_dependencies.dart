@@ -5,6 +5,7 @@ import 'package:chatty_app/features/auth/domain/repositories/auth_repository.dar
 import 'package:chatty_app/features/auth/domain/usecases/user_get_current.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_reset_password.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_sign_in.dart';
+import 'package:chatty_app/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:chatty_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:chatty_app/features/navigation/presentation/bloc/nav_bloc.dart';
@@ -70,6 +71,12 @@ void _initAuth() {
     ),
   );
 
+  getIt.registerFactory(
+    () => UserSignOut(
+      getIt(),
+    ),
+  );
+
   getIt.registerLazySingleton(
     () => AuthBloc(
       userSignUp: getIt(),
@@ -77,6 +84,7 @@ void _initAuth() {
       userResetPassword: getIt(),
       userGetCurrentData: getIt(),
       appUserCubit: getIt(),
+      userSignOut: getIt(),
     ),
   );
 }

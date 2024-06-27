@@ -9,6 +9,8 @@ class UserModel extends User {
     required super.username,
     required super.email,
     required super.avatarUrl,
+    required super.description,
+    required super.friends,
   });
 
   factory UserModel.fromUser(FirebaseAuth.User user) {
@@ -16,7 +18,9 @@ class UserModel extends User {
       id: user.uid,
       username: '',
       email: user.email.toString(),
-      avatarUrl: user.photoURL.toString(),
+      avatarUrl: '',
+      description: '',
+      friends: [],
     );
   }
 
@@ -25,6 +29,8 @@ class UserModel extends User {
       'username': username,
       'email': email,
       'avatarUrl': avatarUrl,
+      'description': description,
+      'friends': friends,
     };
   }
 
@@ -34,6 +40,8 @@ class UserModel extends User {
       'username': username,
       'email': email,
       'avatarUrl': avatarUrl,
+      'description': description,
+      'friends': friends,
     };
   }
 
@@ -43,6 +51,10 @@ class UserModel extends User {
       username: map['username'] as String,
       email: map['email'] as String,
       avatarUrl: map['avatarUrl'] as String,
+      description: map['description'] as String,
+      friends: List<String>.from(
+        (map['friends'] as List<dynamic>).map((item) => item as String),
+      ),
     );
   }
 
@@ -56,12 +68,16 @@ class UserModel extends User {
     String? username,
     String? email,
     String? avatarUrl,
+    String? description,
+    List<String>? friends,
   }) {
     return UserModel(
       id: id ?? this.id,
       username: username ?? this.username,
       email: email ?? this.email,
       avatarUrl: avatarUrl ?? this.avatarUrl,
+      description: description ?? this.description,
+      friends: friends ?? this.friends,
     );
   }
 }

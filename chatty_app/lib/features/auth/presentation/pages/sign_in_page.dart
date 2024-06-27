@@ -32,6 +32,10 @@ class _SignInPageState extends State<SignInPage> {
     passwordController.dispose();
   }
 
+  void _onForgotPressed() {
+    Navigator.of(context).pushReplacementNamed(Routes.forgotRoute);
+  }
+
   void _onSignInPressed() {
     if (formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
@@ -41,6 +45,10 @@ class _SignInPageState extends State<SignInPage> {
             ),
           );
     }
+  }
+
+  void _onSignUpPressed() {
+    Navigator.pushReplacementNamed(context, Routes.signUpRoute);
   }
 
   @override
@@ -63,7 +71,7 @@ class _SignInPageState extends State<SignInPage> {
               if (state is AuthFailure) {
                 showSnackBar(context, state.message);
               } else if (state is AuthSuccess) {
-                print("UUUUUUUUUUUUUUUUUU");
+                Navigator.of(context).pushReplacementNamed(Routes.homeRoute);
               }
             },
             builder: (context, state) {
@@ -150,10 +158,7 @@ class _SignInPageState extends State<SignInPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(right: 40, top: 10),
                           child: TextButton(
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushReplacementNamed(Routes.forgotRoute);
-                            },
+                            onPressed: _onForgotPressed,
                             child: Text(
                               StringManager.forgotPassword,
                               style: Theme.of(context)
@@ -206,10 +211,7 @@ class _SignInPageState extends State<SignInPage> {
 
                           // Sign Up button
                           TextButton(
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, Routes.signUpRoute);
-                            },
+                            onPressed: _onSignUpPressed,
                             child: Text(
                               StringManager.signUp,
                               style: Theme.of(context)
