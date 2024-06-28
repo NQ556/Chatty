@@ -17,6 +17,8 @@ final class AuthFailure extends AuthState {
   AuthFailure(this.message);
 }
 
+final class AuthGetUserFailure extends AuthState {}
+
 final class ResetSuccess extends AuthState {}
 
 final class SignOutSuccess extends AuthState {}

@@ -71,7 +71,7 @@ class _SignInPageState extends State<SignInPage> {
               if (state is AuthFailure) {
                 showSnackBar(context, state.message);
               } else if (state is AuthSuccess) {
-                Navigator.of(context).pushReplacementNamed(Routes.homeRoute);
+                Navigator.pushReplacementNamed(context, Routes.homeRoute);
               }
             },
             builder: (context, state) {

@@ -5,10 +5,10 @@ sealed class NavState {}
 
 final class NavInitial extends NavState {}
 
-final class ConversationState extends NavState {}
+final class NavConversationState extends NavState {}
 
-final class FriendsState extends NavState {}
+final class NavFriendsState extends NavState {}
 
-final class DiscoveryState extends NavState {}
+final class NavDiscoveryState extends NavState {}
 
-final class ProfileState extends NavState {}
+final class NavProfileState extends NavState {}

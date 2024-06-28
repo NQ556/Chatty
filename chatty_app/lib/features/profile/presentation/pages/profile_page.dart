@@ -19,8 +19,11 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  String currentAvatarUrl =
+      "https://i.pinimg.com/736x/e3/91/b5/e391b58efe027ae5b32616837598316d.jpg";
+
   void _onEditPressed() {
-    Navigator.of(context).pushNamed(Routes.editRoute);
+    Navigator.pushReplacementNamed(context, Routes.editRoute);
   }
 
   void _onSignOutPressed() {
@@ -38,7 +41,8 @@ class _ProfilePageState extends State<ProfilePage> {
           if (state is AuthFailure) {
             showSnackBar(context, state.message);
           } else if (state is SignOutSuccess) {
-            Navigator.of(context).pushReplacementNamed(Routes.signInRoute);
+            //_tmp();
+            Navigator.pushReplacementNamed(context, Routes.signInRoute);
           }
         },
         builder: (context, state) {
@@ -55,8 +59,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
                   // Avatar picture
                   AvatarPicture(
-                    avatarUrl:
-                        "https://i.pinimg.com/736x/e3/91/b5/e391b58efe027ae5b32616837598316d.jpg",
+                    avatarUrl: currentUser.avatarUrl.isNotEmpty
+                        ? currentUser.avatarUrl
+                        : currentAvatarUrl,
                   ),
 
                   //
