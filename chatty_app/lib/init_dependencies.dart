@@ -8,6 +8,11 @@ import 'package:chatty_app/features/auth/domain/usecases/user_sign_in.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:chatty_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:chatty_app/features/discovery/data/datasources/discovery_datasource.dart';
+import 'package:chatty_app/features/discovery/data/repositories/discovery_repository_impl.dart';
+import 'package:chatty_app/features/discovery/domain/repositories/discovery_repository.dart';
+import 'package:chatty_app/features/discovery/domain/usecases/discovery_show_new_friends.dart';
+import 'package:chatty_app/features/discovery/presentation/bloc/discovery_bloc.dart';
 import 'package:chatty_app/features/navigation/presentation/bloc/nav_bloc.dart';
 import 'package:chatty_app/features/profile/data/datasources/profile_datasource.dart';
 import 'package:chatty_app/features/profile/data/repositories/profile_repository_impl.dart';
@@ -27,6 +32,7 @@ final getIt = GetIt.instance;
 Future<void> initDependencies() async {
   _initAuth();
   _initProfile();
+  _initDiscovery();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -130,6 +136,32 @@ void _initProfile() {
       profileUpdateInfo: getIt(),
       profileUploadImage: getIt(),
       appUserCubit: getIt(),
+    ),
+  );
+}
+
+void _initDiscovery() {
+  getIt.registerFactory<DiscoveryDatasource>(
+    () => DiscoveryDataSourceImpl(
+      getIt(),
+    ),
+  );
+
+  getIt.registerFactory<DiscoveryRepository>(
+    () => DiscoveryRepositoryImpl(
+      getIt(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => DiscoveryShowNewFriends(
+      getIt(),
+    ),
+  );
+
+  getIt.registerLazySingleton(
+    () => DiscoveryBloc(
+      discoveryShowNewFriends: getIt(),
     ),
   );
 }

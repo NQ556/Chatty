@@ -16,7 +16,7 @@ class _BottomNavState extends State<BottomNav> {
   Widget build(BuildContext context) {
     int _currentIndex = 0;
     final navBloc = context.read<NavBloc>();
-    navBloc.add(NavConversation());
+    navBloc.add(NavConversationEvent());
 
     return BlocBuilder<NavBloc, NavState>(
       builder: (context, state) {
@@ -26,19 +26,19 @@ class _BottomNavState extends State<BottomNav> {
             switch (index) {
               case 0:
                 _currentIndex = 0;
-                navBloc.add(NavConversation());
+                navBloc.add(NavConversationEvent());
                 break;
               case 1:
                 _currentIndex = 1;
-                navBloc.add(NavFriends());
+                navBloc.add(NavFriendsEvent());
                 break;
               case 2:
                 _currentIndex = 2;
-                navBloc.add(NavDiscovery());
+                navBloc.add(NavDiscoveryEvent());
                 break;
               case 3:
                 _currentIndex = 3;
-                navBloc.add(NavProfile());
+                navBloc.add(NavProfileEvent());
                 break;
             }
           },

@@ -35,17 +35,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _userSignOut = userSignOut,
         super(AuthInitial()) {
     on<AuthEvent>((_, emit) {
-      emit(AuthLoading());
+      emit(AuthLoadingState());
     });
-    on<AuthSignUp>(_onAuthSignUp);
-    on<AuthSignIn>(_onAuthSignIn);
-    on<AuthResetPassword>(_onAuthReset);
-    on<AuthGetCurrentUserData>(_onGetCurrentUserData);
-    on<AuthSignOut>(_onUserSignOut);
+    on<SignUpEvent>(_onAuthSignUp);
+    on<SignInEvent>(_onAuthSignIn);
+    on<ResetPasswordEvent>(_onAuthReset);
+    on<GetCurrentUserDataEvent>(_onGetCurrentUserData);
+    on<SignOutEvent>(_onUserSignOut);
   }
 
   void _onAuthSignUp(
-    AuthSignUp event,
+    SignUpEvent event,
     Emitter<AuthState> emit,
   ) async {
     final response = await _userSignUp.call(
@@ -57,13 +57,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     response.fold(
-      (failure) => emit(AuthFailure(failure.message)),
+      (failure) => emit(AuthFailureState(failure.message)),
       (user) => _emitAuthSuccess(user, emit),
     );
   }
 
   void _onAuthSignIn(
-    AuthSignIn event,
+    SignInEvent event,
     Emitter<AuthState> emit,
   ) async {
     final response = await _userSignIn.call(
@@ -74,13 +74,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     response.fold(
-      (failure) => emit(AuthFailure(failure.message)),
+      (failure) => emit(AuthFailureState(failure.message)),
       (user) => _emitAuthSuccess(user, emit),
     );
   }
 
   void _onAuthReset(
-    AuthResetPassword event,
+    ResetPasswordEvent event,
     Emitter<AuthState> emit,
   ) async {
     final response = await _userResetPassword.call(
@@ -90,32 +90,32 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     response.fold(
-      (failure) => emit(AuthFailure(failure.message)),
-      (_) => emit(ResetSuccess()),
+      (failure) => emit(AuthFailureState(failure.message)),
+      (_) => emit(ResetSuccessState()),
     );
   }
 
   void _onGetCurrentUserData(
-    AuthGetCurrentUserData event,
+    GetCurrentUserDataEvent event,
     Emitter<AuthState> emit,
   ) async {
     final response = await _userGetCurrentData.call(NoParams());
 
     response.fold(
-      (_) => emit(AuthGetUserFailure()),
+      (_) => emit(GetUserFailureState()),
       (user) => _emitAuthSuccess(user, emit),
     );
   }
 
-  void _onUserSignOut(AuthSignOut event, Emitter<AuthState> emit) async {
+  void _onUserSignOut(SignOutEvent event, Emitter<AuthState> emit) async {
     final response = await _userSignOut.call(NoParams());
 
     response.fold(
       (failure) => emit(
-        AuthFailure(failure.message),
+        AuthFailureState(failure.message),
       ),
       (_) => emit(
-        SignOutSuccess(),
+        SignOutSuccessState(),
       ),
     );
   }
@@ -125,6 +125,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) {
     _appUserCubit.updateUser(user);
-    emit(AuthSuccess(user));
+    emit(AuthSuccessState(user));
   }
 }

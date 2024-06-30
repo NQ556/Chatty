@@ -17,6 +17,9 @@ class StringManager {
 
   static const String startChat = "Let’s start chatting";
 
+  static const String placeholderUrl =
+      "https://i.pinimg.com/originals/3e/db/f4/3edbf43a6451fa4bdb1831fdefda7ce6.jpg";
+
   static const String edit = "Edit";
   static const String hobbies = "Hobbies";
   static const String description = "Description";

@@ -28,8 +28,7 @@ class _EditPageState extends State<EditPage> {
 
   String userId = "";
   String currentAvatarUrl = "";
-  String placeholderUrl =
-      "https://i.pinimg.com/736x/e3/91/b5/e391b58efe027ae5b32616837598316d.jpg";
+  String placeholderUrl = StringManager.placeholderUrl;
 
   File? avatarImage;
 
@@ -64,7 +63,7 @@ class _EditPageState extends State<EditPage> {
   void _onReturnPressed() {
     Navigator.of(context).pop();
     context.read<NavBloc>().add(
-          NavProfile(),
+          NavProfileEvent(),
         );
   }
 
@@ -80,7 +79,7 @@ class _EditPageState extends State<EditPage> {
 
   void _uploadImageToStorage() {
     context.read<ProfileBloc>().add(
-          ProfileUpload(
+          ProfileUploadEvent(
             image: avatarImage!,
             oldUrl: currentAvatarUrl,
           ),
@@ -90,7 +89,7 @@ class _EditPageState extends State<EditPage> {
   void _updateUserInfo() {
     if (formKey.currentState!.validate()) {
       context.read<ProfileBloc>().add(
-            ProfileUpdate(
+            ProfileUpdateEvent(
               userId: userId,
               username: usernameController.text.trim(),
               description: descriptionController.text.trim(),
@@ -118,17 +117,17 @@ class _EditPageState extends State<EditPage> {
             key: formKey,
             child: BlocConsumer<ProfileBloc, ProfileState>(
               listener: (context, state) {
-                if (state is UploadSuccess) {
+                if (state is UploadSuccessState) {
                   currentAvatarUrl = state.imageUrl;
                   _updateUserInfo();
-                } else if (state is UpdateSuccess) {
+                } else if (state is UpdateSuccessState) {
                   showSnackBar(context, "Update successfully!");
-                } else if (state is EditFailure) {
+                } else if (state is EditFailureState) {
                   showSnackBar(context, state.message);
                 }
               },
               builder: (context, state) {
-                if (state is ProfileLoading) {
+                if (state is ProfileLoadingState) {
                   return Loader();
                 }
 

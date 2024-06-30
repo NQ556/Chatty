@@ -6,7 +6,7 @@ import 'package:chatty_app/core/utils/font_manager.dart';
 import 'package:chatty_app/core/utils/route_manager.dart';
 import 'package:chatty_app/core/utils/string_manager.dart';
 import 'package:chatty_app/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:chatty_app/features/profile/presentation/widgets/avatar_picture.dart';
+import 'package:chatty_app/core/common/widgets/avatar_picture.dart';
 import 'package:chatty_app/features/profile/presentation/widgets/description.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,15 +19,14 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String currentAvatarUrl =
-      "https://i.pinimg.com/736x/e3/91/b5/e391b58efe027ae5b32616837598316d.jpg";
+  String currentAvatarUrl = StringManager.placeholderUrl;
 
   void _onEditPressed() {
-    Navigator.pushReplacementNamed(context, Routes.editRoute);
+    Navigator.pushNamed(context, Routes.editRoute);
   }
 
   void _onSignOutPressed() {
-    context.read<AuthBloc>().add(AuthSignOut());
+    context.read<AuthBloc>().add(SignOutEvent());
   }
 
   @override
@@ -38,9 +37,9 @@ class _ProfilePageState extends State<ProfilePage> {
     return SafeArea(
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthFailure) {
+          if (state is AuthFailureState) {
             showSnackBar(context, state.message);
-          } else if (state is SignOutSuccess) {
+          } else if (state is SignOutSuccessState) {
             //_tmp();
             Navigator.pushReplacementNamed(context, Routes.signInRoute);
           }
@@ -62,6 +61,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     avatarUrl: currentUser.avatarUrl.isNotEmpty
                         ? currentUser.avatarUrl
                         : currentAvatarUrl,
+                    width: 150,
+                    height: 150,
                   ),
 
                   //

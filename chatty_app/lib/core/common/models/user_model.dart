@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chatty_app/core/common/entities/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FirebaseAuth;
 
 class UserModel extends User {
@@ -11,6 +12,7 @@ class UserModel extends User {
     required super.avatarUrl,
     required super.description,
     required super.friends,
+    super.documentSnapshot,
   });
 
   factory UserModel.fromUser(FirebaseAuth.User user) {
@@ -70,6 +72,7 @@ class UserModel extends User {
     String? avatarUrl,
     String? description,
     List<String>? friends,
+    DocumentSnapshot? documentSnapshot,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -78,6 +81,7 @@ class UserModel extends User {
       avatarUrl: avatarUrl ?? this.avatarUrl,
       description: description ?? this.description,
       friends: friends ?? this.friends,
+      documentSnapshot: documentSnapshot ?? this.documentSnapshot,
     );
   }
 }

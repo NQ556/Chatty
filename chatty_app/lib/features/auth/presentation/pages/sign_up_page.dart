@@ -42,7 +42,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
       if (password == confirmPassword) {
         context.read<AuthBloc>().add(
-              AuthSignUp(
+              SignUpEvent(
                 username: usernameController.text.trim(),
                 email: emailController.text.trim(),
                 password: passwordController.text,
@@ -83,14 +83,14 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           child: BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
-              if (state is AuthFailure) {
+              if (state is AuthFailureState) {
                 showSnackBar(context, state.message);
-              } else if (state is AuthSuccess) {
+              } else if (state is AuthSuccessState) {
                 _onSuccessSignUp();
               }
             },
             builder: (context, state) {
-              if (state is AuthLoading) {
+              if (state is AuthLoadingState) {
                 return Loader();
               }
 

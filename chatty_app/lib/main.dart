@@ -3,6 +3,7 @@ import 'package:chatty_app/core/utils/route_manager.dart';
 import 'package:chatty_app/core/utils/theme_manager.dart';
 import 'package:chatty_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:chatty_app/features/auth/presentation/pages/sign_in_page.dart';
+import 'package:chatty_app/features/discovery/presentation/bloc/discovery_bloc.dart';
 import 'package:chatty_app/features/navigation/presentation/bloc/nav_bloc.dart';
 import 'package:chatty_app/features/navigation/presentation/pages/home_page.dart';
 import 'package:chatty_app/features/profile/presentation/bloc/profile_bloc.dart';
@@ -29,7 +30,10 @@ void main() async {
       ),
       BlocProvider(
         create: (_) => getIt<ProfileBloc>(),
-      )
+      ),
+      BlocProvider(
+        create: (_) => getIt<DiscoveryBloc>(),
+      ),
     ],
     child: const MyApp(),
   ));
@@ -46,7 +50,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    context.read<AuthBloc>().add(AuthGetCurrentUserData());
+    context.read<AuthBloc>().add(GetCurrentUserDataEvent());
   }
 
   @override

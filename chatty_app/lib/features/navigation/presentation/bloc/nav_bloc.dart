@@ -6,16 +6,16 @@ part 'nav_state.dart';
 
 class NavBloc extends Bloc<NavEvent, NavState> {
   NavBloc() : super(NavInitial()) {
-    on<NavConversation>((_, emit) {
+    on<NavConversationEvent>((_, emit) {
       emit(NavConversationState());
     });
-    on<NavFriends>((_, emit) {
+    on<NavFriendsEvent>((_, emit) {
       emit(NavFriendsState());
     });
-    on<NavDiscovery>((_, emit) {
+    on<NavDiscoveryEvent>((_, emit) {
       emit(NavDiscoveryState());
     });
-    on<NavProfile>((_, emit) {
+    on<NavProfileEvent>((_, emit) {
       emit(NavProfileState());
     });
   }

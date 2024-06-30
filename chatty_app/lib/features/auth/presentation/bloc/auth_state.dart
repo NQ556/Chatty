@@ -5,20 +5,20 @@ sealed class AuthState {}
 
 final class AuthInitial extends AuthState {}
 
-final class AuthLoading extends AuthState {}
+final class AuthLoadingState extends AuthState {}
 
-final class AuthSuccess extends AuthState {
+final class AuthSuccessState extends AuthState {
   final User user;
-  AuthSuccess(this.user);
+  AuthSuccessState(this.user);
 }
 
-final class AuthFailure extends AuthState {
+final class AuthFailureState extends AuthState {
   final String message;
-  AuthFailure(this.message);
+  AuthFailureState(this.message);
 }
 
-final class AuthGetUserFailure extends AuthState {}
+final class GetUserFailureState extends AuthState {}
 
-final class ResetSuccess extends AuthState {}
+final class ResetSuccessState extends AuthState {}
 
-final class SignOutSuccess extends AuthState {}
+final class SignOutSuccessState extends AuthState {}

@@ -23,14 +23,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         _appUserCubit = appUserCubit,
         super(ProfileInitial()) {
     on<ProfileEvent>((_, emit) {
-      emit(ProfileLoading());
+      emit(ProfileLoadingState());
     });
-    on<ProfileUpdate>(_onProfileUpdateInfo);
-    on<ProfileUpload>(_onProfileUploadImage);
+    on<ProfileUpdateEvent>(_onProfileUpdateInfo);
+    on<ProfileUploadEvent>(_onProfileUploadImage);
   }
 
   void _onProfileUpdateInfo(
-    ProfileUpdate event,
+    ProfileUpdateEvent event,
     Emitter<ProfileState> emit,
   ) async {
     final response = await _profileUpdateInfo.call(ProfileUpdateInfoParams(
@@ -41,13 +41,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     ));
 
     response.fold(
-      (failure) => emit(EditFailure(failure.message)),
+      (failure) => emit(EditFailureState(failure.message)),
       (user) => _emitUpdateSuccess(user, emit),
     );
   }
 
   void _onProfileUploadImage(
-    ProfileUpload event,
+    ProfileUploadEvent event,
     Emitter<ProfileState> emit,
   ) async {
     final response = await _profileUploadImage(
@@ -58,9 +58,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     );
 
     response.fold(
-      (failure) => emit(EditFailure(failure.message)),
+      (failure) => emit(EditFailureState(failure.message)),
       (imageUrl) => emit(
-        UploadSuccess(imageUrl),
+        UploadSuccessState(imageUrl),
       ),
     );
   }
@@ -70,6 +70,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Emitter<ProfileState> emit,
   ) {
     _appUserCubit.updateUser(user);
-    emit(UpdateSuccess(user));
+    emit(UpdateSuccessState(user));
   }
 }

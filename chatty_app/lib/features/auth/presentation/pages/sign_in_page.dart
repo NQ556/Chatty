@@ -39,7 +39,7 @@ class _SignInPageState extends State<SignInPage> {
   void _onSignInPressed() {
     if (formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
-            AuthSignIn(
+            SignInEvent(
               email: emailController.text.trim(),
               password: passwordController.text.trim(),
             ),
@@ -68,14 +68,14 @@ class _SignInPageState extends State<SignInPage> {
           ),
           child: BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
-              if (state is AuthFailure) {
+              if (state is AuthFailureState) {
                 showSnackBar(context, state.message);
-              } else if (state is AuthSuccess) {
+              } else if (state is AuthSuccessState) {
                 Navigator.pushReplacementNamed(context, Routes.homeRoute);
               }
             },
             builder: (context, state) {
-              if (state is AuthLoading) {
+              if (state is AuthLoadingState) {
                 return Loader();
               }
 

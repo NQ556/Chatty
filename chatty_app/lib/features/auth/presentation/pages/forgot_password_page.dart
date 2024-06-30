@@ -33,7 +33,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   void _onResetPasswordPressed() {
     if (formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
-            AuthResetPassword(
+            ResetPasswordEvent(
               email: emailController.text.toString(),
             ),
           );
@@ -57,15 +57,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           ),
           child: BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
-              if (state is AuthFailure) {
+              if (state is AuthFailureState) {
                 showSnackBar(context, state.message);
-              } else if (state is ResetSuccess) {
+              } else if (state is ResetSuccessState) {
                 emailController.clear();
                 showSnackBar(context, "Sent reset link successfully!");
               }
             },
             builder: (context, state) {
-              if (state is AuthLoading) {
+              if (state is AuthLoadingState) {
                 return Loader();
               }
 

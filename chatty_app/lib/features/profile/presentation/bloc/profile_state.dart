@@ -5,19 +5,19 @@ sealed class ProfileState {}
 
 final class ProfileInitial extends ProfileState {}
 
-final class ProfileLoading extends ProfileState {}
+final class ProfileLoadingState extends ProfileState {}
 
-final class UpdateSuccess extends ProfileState {
+final class UpdateSuccessState extends ProfileState {
   final User user;
-  UpdateSuccess(this.user);
+  UpdateSuccessState(this.user);
 }
 
-final class UploadSuccess extends ProfileState {
+final class UploadSuccessState extends ProfileState {
   final String imageUrl;
-  UploadSuccess(this.imageUrl);
+  UploadSuccessState(this.imageUrl);
 }
 
-final class EditFailure extends ProfileState {
+final class EditFailureState extends ProfileState {
   final String message;
-  EditFailure(this.message);
+  EditFailureState(this.message);
 }

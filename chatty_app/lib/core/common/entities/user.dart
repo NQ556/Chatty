@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class User {
   final String id;
   final String username;
@@ -5,6 +7,7 @@ class User {
   final String avatarUrl;
   final String description;
   final List<String> friends;
+  final DocumentSnapshot? documentSnapshot;
 
   User({
     required this.id,
@@ -13,5 +16,6 @@ class User {
     required this.avatarUrl,
     required this.description,
     required this.friends,
+    this.documentSnapshot,
   });
 }
