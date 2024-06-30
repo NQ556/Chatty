@@ -1,4 +1,5 @@
 import 'package:chatty_app/core/common/widgets/search_box.dart';
+import 'package:chatty_app/core/utils/string_manager.dart';
 import 'package:chatty_app/features/conversation/presentation/widgets/empty_list.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,7 @@ class _ConversationPageState extends State<ConversationPage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           child: SearchBox(
-            hintText: "Search",
+            hintText: StringManager.search,
             textEditingController: searchController,
           ),
         ),

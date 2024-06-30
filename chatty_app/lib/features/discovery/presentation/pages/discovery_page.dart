@@ -1,8 +1,8 @@
 import 'package:chatty_app/core/common/cubit/app_user_cubit.dart';
 import 'package:chatty_app/core/common/entities/user.dart';
 import 'package:chatty_app/core/common/functions/show_snackbar.dart';
-import 'package:chatty_app/core/common/widgets/loader.dart';
 import 'package:chatty_app/core/common/widgets/search_box.dart';
+import 'package:chatty_app/core/utils/string_manager.dart';
 import 'package:chatty_app/features/discovery/presentation/bloc/discovery_bloc.dart';
 import 'package:chatty_app/features/discovery/presentation/widgets/user_display.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,12 +18,18 @@ class DiscoveryPage extends StatefulWidget {
 
 class _DiscoveryPageState extends State<DiscoveryPage> {
   final searchController = TextEditingController();
+  final scrollController = ScrollController();
   List<User> users = [];
 
   @override
   void initState() {
     super.initState();
-    _loadMoreUsers();
+    scrollController.addListener(_onScroll);
+
+    final state = context.read<DiscoveryBloc>().state;
+    if (!(state is DiscoverySuccessState)) {
+      _loadMoreUsers();
+    }
   }
 
   @override
@@ -31,6 +37,17 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
     super.dispose();
 
     searchController.dispose();
+    scrollController.dispose();
+  }
+
+  void _onScroll() {
+    final state = context.read<DiscoveryBloc>().state;
+    if (scrollController.position.atEdge) {
+      bool isBottom = scrollController.position.pixels != 0;
+      if (isBottom && state is DiscoverySuccessState) {
+        _loadMoreUsers(lastDocument: users.last.documentSnapshot);
+      }
+    }
   }
 
   void _loadMoreUsers({DocumentSnapshot? lastDocument}) {
@@ -40,7 +57,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
     context.read<DiscoveryBloc>().add(
           ShowFriendsEvent(
             currentUserId: currentUser.id,
-            limit: 1,
+            limit: 6,
             lastDocument: lastDocument,
           ),
         );
@@ -56,61 +73,44 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
           }
         },
         builder: (context, state) {
-          if (state is DiscoveryLoadingState) {
-            return Loader();
-          } else if (state is DiscoverySuccessState ||
-              state is DiscoveryEmptyState) {
+          if (state is DiscoverySuccessState || state is DiscoveryEmptyState) {
             if (state is DiscoverySuccessState) {
-              users += state.users;
+              users.addAll(state.users);
             }
-
-            return NotificationListener(
-              onNotification: (ScrollNotification scrollInfo) {
-                if (scrollInfo.metrics.pixels ==
-                        scrollInfo.metrics.maxScrollExtent &&
-                    state is DiscoverySuccessState) {
-                  _loadMoreUsers(
-                    lastDocument: users.last.documentSnapshot,
-                  );
-                }
-
-                return false;
-              },
-              child: Column(
-                children: [
-                  // Search
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 20),
-                    child: SearchBox(
-                      hintText: "Search",
-                      textEditingController: searchController,
-                    ),
-                  ),
-
-                  //
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: users.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 30,
-                          ),
-                          child: UserDisplay(
-                            user: users[index],
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
-            );
           }
 
-          return SizedBox();
+          return Column(
+            children: [
+              // Search
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                child: SearchBox(
+                  hintText: StringManager.search,
+                  textEditingController: searchController,
+                ),
+              ),
+
+              //
+              Expanded(
+                child: ListView.builder(
+                  controller: scrollController,
+                  itemCount: users.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 30,
+                      ),
+                      child: UserDisplay(
+                        user: users[index],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
         },
       ),
     );

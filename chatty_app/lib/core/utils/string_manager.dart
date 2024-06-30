@@ -25,4 +25,6 @@ class StringManager {
   static const String description = "Description";
   static const String signOut = "Sign Out";
   static const String save = "Save";
+
+  static const String search = "Search";
 }
