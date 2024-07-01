@@ -7,7 +7,7 @@ import 'package:chatty_app/core/utils/route_manager.dart';
 import 'package:chatty_app/core/utils/string_manager.dart';
 import 'package:chatty_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:chatty_app/core/common/widgets/avatar_picture.dart';
-import 'package:chatty_app/features/profile/presentation/widgets/description.dart';
+import 'package:chatty_app/core/common/widgets/description.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,7 +40,6 @@ class _ProfilePageState extends State<ProfilePage> {
           if (state is AuthFailureState) {
             showSnackBar(context, state.message);
           } else if (state is SignOutSuccessState) {
-            //_tmp();
             Navigator.pushReplacementNamed(context, Routes.signInRoute);
           }
         },

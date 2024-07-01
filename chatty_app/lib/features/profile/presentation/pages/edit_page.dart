@@ -6,7 +6,6 @@ import 'package:chatty_app/core/common/widgets/loader.dart';
 import 'package:chatty_app/core/common/widgets/rounded_button.dart';
 import 'package:chatty_app/core/utils/color_manager.dart';
 import 'package:chatty_app/core/utils/string_manager.dart';
-import 'package:chatty_app/features/navigation/presentation/bloc/nav_bloc.dart';
 import 'package:chatty_app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:chatty_app/features/profile/presentation/widgets/edit_avatar_picture.dart';
 import 'package:chatty_app/features/profile/presentation/widgets/input_edit_field.dart';
@@ -62,9 +61,6 @@ class _EditPageState extends State<EditPage> {
 
   void _onReturnPressed() {
     Navigator.of(context).pop();
-    context.read<NavBloc>().add(
-          NavProfileEvent(),
-        );
   }
 
   void _onSelectImagePressed() async {

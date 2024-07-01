@@ -1,6 +1,8 @@
+import 'package:chatty_app/core/common/entities/user.dart';
 import 'package:chatty_app/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:chatty_app/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:chatty_app/features/auth/presentation/pages/sign_up_page.dart';
+import 'package:chatty_app/features/friends/presentation/pages/user_detail_page.dart';
 import 'package:chatty_app/features/navigation/presentation/pages/home_page.dart';
 import 'package:chatty_app/features/profile/presentation/pages/edit_page.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ class Routes {
   static const String forgotRoute = "/forgot";
   static const String homeRoute = "/home";
   static const String editRoute = "/edit";
+  static const String profileRoute = "/profile";
 }
 
 class RouteGenerator {
@@ -36,6 +39,16 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => EditPage(),
         );
+      case Routes.profileRoute:
+        if (routeSettings.arguments is User) {
+          final user = routeSettings.arguments as User;
+          return MaterialPageRoute(
+            builder: (_) => UserDetailPage(
+              user: user,
+            ),
+          );
+        }
+        return unDefinedRoute();
       default:
         return unDefinedRoute();
     }

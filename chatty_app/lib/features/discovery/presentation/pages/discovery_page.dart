@@ -2,6 +2,7 @@ import 'package:chatty_app/core/common/cubit/app_user_cubit.dart';
 import 'package:chatty_app/core/common/entities/user.dart';
 import 'package:chatty_app/core/common/functions/show_snackbar.dart';
 import 'package:chatty_app/core/common/widgets/search_box.dart';
+import 'package:chatty_app/core/utils/route_manager.dart';
 import 'package:chatty_app/core/utils/string_manager.dart';
 import 'package:chatty_app/features/discovery/presentation/bloc/discovery_bloc.dart';
 import 'package:chatty_app/features/discovery/presentation/widgets/user_display.dart';
@@ -27,6 +28,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
     scrollController.addListener(_onScroll);
 
     final state = context.read<DiscoveryBloc>().state;
+
     if (!(state is DiscoverySuccessState)) {
       _loadMoreUsers();
     }
@@ -61,6 +63,10 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
             lastDocument: lastDocument,
           ),
         );
+  }
+
+  void _onUserPressed(User user) {
+    Navigator.pushNamed(context, Routes.profileRoute, arguments: user);
   }
 
   @override
@@ -104,6 +110,9 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
                       ),
                       child: UserDisplay(
                         user: users[index],
+                        onTap: () {
+                          _onUserPressed(users[index]);
+                        },
                       ),
                     );
                   },

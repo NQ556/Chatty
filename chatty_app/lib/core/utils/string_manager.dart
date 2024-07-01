@@ -27,4 +27,5 @@ class StringManager {
   static const String save = "Save";
 
   static const String search = "Search";
+  static const String addFriend = "Add friend";
 }

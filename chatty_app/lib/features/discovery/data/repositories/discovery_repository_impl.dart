@@ -4,7 +4,7 @@ import 'package:chatty_app/core/error/failure.dart';
 import 'package:chatty_app/features/discovery/data/datasources/discovery_datasource.dart';
 import 'package:chatty_app/features/discovery/domain/repositories/discovery_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fpdart/src/either.dart';
+import 'package:fpdart/fpdart.dart';
 
 class DiscoveryRepositoryImpl implements DiscoveryRepository {
   final DiscoveryDatasource discoveryDatasource;
