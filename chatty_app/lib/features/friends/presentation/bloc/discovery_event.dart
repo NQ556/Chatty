@@ -14,3 +14,15 @@ final class ShowFriendsEvent extends DiscoveryEvent {
     this.lastDocument,
   });
 }
+
+final class AddFriendEvent extends DiscoveryEvent {
+  final String currentUserId;
+  final String friendId;
+  final int currentIndex;
+
+  AddFriendEvent({
+    required this.currentUserId,
+    required this.friendId,
+    required this.currentIndex,
+  });
+}

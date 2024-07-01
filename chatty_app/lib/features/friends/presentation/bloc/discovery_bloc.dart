@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:chatty_app/core/common/entities/user.dart';
-import 'package:chatty_app/features/discovery/domain/usecases/discovery_show_new_friends.dart';
+import 'package:chatty_app/features/friends/domain/usecases/discovery_show_new_friends.dart';
+import 'package:chatty_app/features/friends/domain/usecases/friend_add_friend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
 
@@ -9,15 +10,19 @@ part 'discovery_state.dart';
 
 class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
   final DiscoveryShowNewFriends _discoveryShowNewFriends;
+  final FriendAddFriend _friendAddFriend;
 
   DiscoveryBloc({
     required DiscoveryShowNewFriends discoveryShowNewFriends,
+    required FriendAddFriend friendAddFriend,
   })  : _discoveryShowNewFriends = discoveryShowNewFriends,
+        _friendAddFriend = friendAddFriend,
         super(DiscoveryInitial()) {
     on<DiscoveryEvent>((_, emit) {
       emit(DiscoveryLoadingState());
     });
     on<ShowFriendsEvent>(_onShowNewFriends);
+    on<AddFriendEvent>(_onAddFriend);
   }
 
   void _onShowNewFriends(
@@ -37,15 +42,34 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
       (users) => _emitDiscoverySucces(users, emit),
     );
   }
-}
 
-void _emitDiscoverySucces(
-  List<User> users,
-  Emitter<DiscoveryState> emit,
-) {
-  if (users.isEmpty) {
-    emit(DiscoveryEmptyState());
-  } else {
-    emit(DiscoverySuccessState(users));
+  void _onAddFriend(
+    AddFriendEvent event,
+    Emitter<DiscoveryState> emit,
+  ) async {
+    final response = await _friendAddFriend.call(
+      FriendAddFriendParams(
+        currentUserId: event.currentUserId,
+        friendId: event.friendId,
+      ),
+    );
+
+    response.fold(
+      (failure) => emit(DiscoveryFailureState(failure.message)),
+      (_) => emit(
+        AddFriendSuccessState(event.currentIndex),
+      ),
+    );
+  }
+
+  void _emitDiscoverySucces(
+    List<User> users,
+    Emitter<DiscoveryState> emit,
+  ) {
+    if (users.isEmpty) {
+      emit(DiscoveryEmptyState());
+    } else {
+      emit(DiscoverySuccessState(users));
+    }
   }
 }

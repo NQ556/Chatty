@@ -16,6 +16,16 @@ class Routes {
   static const String profileRoute = "/profile";
 }
 
+class UserDetailArguments {
+  final User user;
+  final int currentIndex;
+
+  UserDetailArguments({
+    required this.user,
+    required this.currentIndex,
+  });
+}
+
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
@@ -40,11 +50,12 @@ class RouteGenerator {
           builder: (_) => EditPage(),
         );
       case Routes.profileRoute:
-        if (routeSettings.arguments is User) {
-          final user = routeSettings.arguments as User;
+        if (routeSettings.arguments is UserDetailArguments) {
+          final args = routeSettings.arguments as UserDetailArguments;
           return MaterialPageRoute(
             builder: (_) => UserDetailPage(
-              user: user,
+              user: args.user,
+              currentIndex: args.currentIndex,
             ),
           );
         }

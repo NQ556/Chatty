@@ -1,3 +1,4 @@
+import 'package:chatty_app/core/common/cubit/app_user_cubit.dart';
 import 'package:chatty_app/core/common/entities/user.dart';
 import 'package:chatty_app/core/common/widgets/avatar_picture.dart';
 import 'package:chatty_app/core/common/widgets/description.dart';
@@ -5,14 +6,20 @@ import 'package:chatty_app/core/common/widgets/rounded_button.dart';
 import 'package:chatty_app/core/utils/color_manager.dart';
 import 'package:chatty_app/core/utils/font_manager.dart';
 import 'package:chatty_app/core/utils/string_manager.dart';
+import 'package:chatty_app/features/friends/presentation/bloc/discovery_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserDetailPage extends StatefulWidget {
   const UserDetailPage({
     super.key,
     required this.user,
+    this.isFriend = false,
+    required this.currentIndex,
   });
   final User user;
+  final bool isFriend;
+  final int currentIndex;
 
   @override
   State<UserDetailPage> createState() => _UserDetailPageState();
@@ -20,9 +27,39 @@ class UserDetailPage extends StatefulWidget {
 
 class _UserDetailPageState extends State<UserDetailPage> {
   String currentAvatarUrl = StringManager.placeholderUrl;
+  bool _isFriend = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isFriend = widget.isFriend;
+  }
 
   void _onReturnPressed() {
     Navigator.of(context).pop();
+  }
+
+  void _addFriend() {
+    final currentUser =
+        (context.read<AppUserCubit>().state as AppUserSignedIn).user;
+
+    context.read<DiscoveryBloc>().add(
+          AddFriendEvent(
+            currentUserId: currentUser.id,
+            friendId: widget.user.id,
+            currentIndex: widget.currentIndex,
+          ),
+        );
+  }
+
+  void _onFriendPressed() {
+    if (!widget.isFriend) {
+      _addFriend();
+    }
+
+    setState(() {
+      _isFriend = !_isFriend;
+    });
   }
 
   @override
@@ -81,9 +118,12 @@ class _UserDetailPageState extends State<UserDetailPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: RoundedButton(
-                    buttonText: StringManager.addFriend,
+                    buttonText: _isFriend
+                        ? StringManager.unfriend
+                        : StringManager.addFriend,
                     backgroundColor: ColorManager.primary50,
                     textColor: Colors.white,
+                    onTap: _onFriendPressed,
                   ),
                 ),
 

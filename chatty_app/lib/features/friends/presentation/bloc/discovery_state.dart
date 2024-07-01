@@ -21,3 +21,8 @@ final class DiscoveryFailureState extends DiscoveryState {
   final String message;
   DiscoveryFailureState(this.message);
 }
+
+final class AddFriendSuccessState extends DiscoveryState {
+  final int currentIndex;
+  AddFriendSuccessState(this.currentIndex);
+}

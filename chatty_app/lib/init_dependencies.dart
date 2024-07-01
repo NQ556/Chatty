@@ -8,11 +8,12 @@ import 'package:chatty_app/features/auth/domain/usecases/user_sign_in.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:chatty_app/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:chatty_app/features/discovery/data/datasources/discovery_datasource.dart';
-import 'package:chatty_app/features/discovery/data/repositories/discovery_repository_impl.dart';
-import 'package:chatty_app/features/discovery/domain/repositories/discovery_repository.dart';
-import 'package:chatty_app/features/discovery/domain/usecases/discovery_show_new_friends.dart';
-import 'package:chatty_app/features/discovery/presentation/bloc/discovery_bloc.dart';
+import 'package:chatty_app/features/friends/data/datasources/discovery_datasource.dart';
+import 'package:chatty_app/features/friends/data/repositories/discovery_repository_impl.dart';
+import 'package:chatty_app/features/friends/domain/repositories/discovery_repository.dart';
+import 'package:chatty_app/features/friends/domain/usecases/discovery_show_new_friends.dart';
+import 'package:chatty_app/features/friends/domain/usecases/friend_add_friend.dart';
+import 'package:chatty_app/features/friends/presentation/bloc/discovery_bloc.dart';
 import 'package:chatty_app/features/navigation/presentation/bloc/nav_bloc.dart';
 import 'package:chatty_app/features/profile/data/datasources/profile_datasource.dart';
 import 'package:chatty_app/features/profile/data/repositories/profile_repository_impl.dart';
@@ -159,9 +160,16 @@ void _initDiscovery() {
     ),
   );
 
+  getIt.registerFactory(
+    () => FriendAddFriend(
+      getIt(),
+    ),
+  );
+
   getIt.registerLazySingleton(
     () => DiscoveryBloc(
       discoveryShowNewFriends: getIt(),
+      friendAddFriend: getIt(),
     ),
   );
 }

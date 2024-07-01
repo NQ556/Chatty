@@ -1,8 +1,8 @@
 import 'package:chatty_app/core/common/entities/user.dart';
 import 'package:chatty_app/core/error/exception.dart';
 import 'package:chatty_app/core/error/failure.dart';
-import 'package:chatty_app/features/discovery/data/datasources/discovery_datasource.dart';
-import 'package:chatty_app/features/discovery/domain/repositories/discovery_repository.dart';
+import 'package:chatty_app/features/friends/data/datasources/discovery_datasource.dart';
+import 'package:chatty_app/features/friends/domain/repositories/discovery_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -23,6 +23,23 @@ class DiscoveryRepositoryImpl implements DiscoveryRepository {
       );
 
       return right(users);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> addFriend({
+    required String currentUserId,
+    required String friendId,
+  }) async {
+    try {
+      await discoveryDatasource.addFriend(
+        currentUserId: currentUserId,
+        friendId: friendId,
+      );
+
+      return right(unit);
     } on ServerException catch (e) {
       return left(Failure(e.message));
     }

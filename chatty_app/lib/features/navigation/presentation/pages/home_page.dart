@@ -1,5 +1,5 @@
 import 'package:chatty_app/features/conversation/presentation/pages/conversation_page.dart';
-import 'package:chatty_app/features/discovery/presentation/pages/discovery_page.dart';
+import 'package:chatty_app/features/friends/presentation/pages/discovery_page.dart';
 import 'package:chatty_app/features/friends/presentation/pages/friends_page.dart';
 import 'package:chatty_app/features/navigation/presentation/bloc/nav_bloc.dart';
 import 'package:chatty_app/features/navigation/presentation/widgets/bottom_nav.dart';

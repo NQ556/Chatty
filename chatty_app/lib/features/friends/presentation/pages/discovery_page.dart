@@ -4,8 +4,8 @@ import 'package:chatty_app/core/common/functions/show_snackbar.dart';
 import 'package:chatty_app/core/common/widgets/search_box.dart';
 import 'package:chatty_app/core/utils/route_manager.dart';
 import 'package:chatty_app/core/utils/string_manager.dart';
-import 'package:chatty_app/features/discovery/presentation/bloc/discovery_bloc.dart';
-import 'package:chatty_app/features/discovery/presentation/widgets/user_display.dart';
+import 'package:chatty_app/features/friends/presentation/bloc/discovery_bloc.dart';
+import 'package:chatty_app/features/friends/presentation/widgets/user_display.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,8 +65,15 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
         );
   }
 
-  void _onUserPressed(User user) {
-    Navigator.pushNamed(context, Routes.profileRoute, arguments: user);
+  void _onUserPressed(User user, int currentIndex) {
+    Navigator.pushNamed(
+      context,
+      Routes.profileRoute,
+      arguments: UserDetailArguments(
+        user: user,
+        currentIndex: currentIndex,
+      ),
+    );
   }
 
   @override
@@ -83,6 +90,8 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
             if (state is DiscoverySuccessState) {
               users.addAll(state.users);
             }
+          } else if (state is AddFriendSuccessState && users.isNotEmpty) {
+            users.removeAt(state.currentIndex);
           }
 
           return Column(
@@ -111,7 +120,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
                       child: UserDisplay(
                         user: users[index],
                         onTap: () {
-                          _onUserPressed(users[index]);
+                          _onUserPressed(users[index], index);
                         },
                       ),
                     );

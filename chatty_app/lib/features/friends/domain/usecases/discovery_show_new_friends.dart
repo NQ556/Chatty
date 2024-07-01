@@ -1,7 +1,7 @@
 import 'package:chatty_app/core/common/entities/user.dart';
 import 'package:chatty_app/core/error/failure.dart';
 import 'package:chatty_app/core/usecase/usecase.dart';
-import 'package:chatty_app/features/discovery/domain/repositories/discovery_repository.dart';
+import 'package:chatty_app/features/friends/domain/repositories/discovery_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/src/either.dart';
 
