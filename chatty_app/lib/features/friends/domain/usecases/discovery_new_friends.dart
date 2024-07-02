@@ -5,14 +5,14 @@ import 'package:chatty_app/features/friends/domain/repositories/discovery_reposi
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/src/either.dart';
 
-class DiscoveryShowNewFriends
-    implements Usecase<List<User>, DiscoveryShowNewFriendsParams> {
+class DiscoveryNewFriends
+    implements Usecase<List<User>, DiscoveryNewFriendsParams> {
   final DiscoveryRepository discoveryRepository;
-  DiscoveryShowNewFriends(this.discoveryRepository);
+  DiscoveryNewFriends(this.discoveryRepository);
 
   @override
   Future<Either<Failure, List<User>>> call(
-      DiscoveryShowNewFriendsParams params) async {
+      DiscoveryNewFriendsParams params) async {
     return await discoveryRepository.discoveryNewFriends(
       currentUserId: params.currentUserId,
       limit: params.limit,
@@ -21,12 +21,12 @@ class DiscoveryShowNewFriends
   }
 }
 
-class DiscoveryShowNewFriendsParams {
+class DiscoveryNewFriendsParams {
   final String currentUserId;
   final int limit;
   final DocumentSnapshot? lastDocument;
 
-  DiscoveryShowNewFriendsParams({
+  DiscoveryNewFriendsParams({
     required this.currentUserId,
     required this.limit,
     required this.lastDocument,

@@ -29,7 +29,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
 
     final state = context.read<DiscoveryBloc>().state;
 
-    if (!(state is DiscoverySuccessState)) {
+    if (!(state is GetUsersSuccessState)) {
       _loadMoreUsers();
     }
   }
@@ -46,7 +46,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
     final state = context.read<DiscoveryBloc>().state;
     if (scrollController.position.atEdge) {
       bool isBottom = scrollController.position.pixels != 0;
-      if (isBottom && state is DiscoverySuccessState) {
+      if (isBottom && state is GetUsersSuccessState) {
         _loadMoreUsers(lastDocument: users.last.documentSnapshot);
       }
     }
@@ -57,7 +57,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
         (context.read<AppUserCubit>().state as AppUserSignedIn).user;
 
     context.read<DiscoveryBloc>().add(
-          ShowFriendsEvent(
+          DiscoveryFriendsEvent(
             currentUserId: currentUser.id,
             limit: 6,
             lastDocument: lastDocument,
@@ -86,8 +86,8 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
           }
         },
         builder: (context, state) {
-          if (state is DiscoverySuccessState || state is DiscoveryEmptyState) {
-            if (state is DiscoverySuccessState) {
+          if (state is GetUsersSuccessState || state is DiscoveryEmptyState) {
+            if (state is GetUsersSuccessState) {
               users.addAll(state.users);
             }
           } else if (state is AddFriendSuccessState && users.isNotEmpty) {

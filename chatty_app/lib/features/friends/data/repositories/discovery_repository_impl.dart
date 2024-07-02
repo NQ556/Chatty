@@ -44,4 +44,23 @@ class DiscoveryRepositoryImpl implements DiscoveryRepository {
       return left(Failure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, List<User>>> getFriends({
+    required String currentUserId,
+    required int limit,
+    DocumentSnapshot<Object?>? lastDocument,
+  }) async {
+    try {
+      final users = await discoveryDatasource.getFriends(
+        currentUserId: currentUserId,
+        limit: limit,
+        lastDocument: lastDocument,
+      );
+
+      return right(users);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
 }

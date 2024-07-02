@@ -11,8 +11,9 @@ import 'package:chatty_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:chatty_app/features/friends/data/datasources/discovery_datasource.dart';
 import 'package:chatty_app/features/friends/data/repositories/discovery_repository_impl.dart';
 import 'package:chatty_app/features/friends/domain/repositories/discovery_repository.dart';
-import 'package:chatty_app/features/friends/domain/usecases/discovery_show_new_friends.dart';
+import 'package:chatty_app/features/friends/domain/usecases/discovery_new_friends.dart';
 import 'package:chatty_app/features/friends/domain/usecases/friend_add_friend.dart';
+import 'package:chatty_app/features/friends/domain/usecases/friend_get_friends.dart';
 import 'package:chatty_app/features/friends/presentation/bloc/discovery_bloc.dart';
 import 'package:chatty_app/features/navigation/presentation/bloc/nav_bloc.dart';
 import 'package:chatty_app/features/profile/data/datasources/profile_datasource.dart';
@@ -155,7 +156,7 @@ void _initDiscovery() {
   );
 
   getIt.registerFactory(
-    () => DiscoveryShowNewFriends(
+    () => DiscoveryNewFriends(
       getIt(),
     ),
   );
@@ -166,10 +167,17 @@ void _initDiscovery() {
     ),
   );
 
+  getIt.registerFactory(
+    () => FriendGetFriends(
+      getIt(),
+    ),
+  );
+
   getIt.registerLazySingleton(
     () => DiscoveryBloc(
       discoveryShowNewFriends: getIt(),
       friendAddFriend: getIt(),
+      friendGetFriends: getIt(),
     ),
   );
 }

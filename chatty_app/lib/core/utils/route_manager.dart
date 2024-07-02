@@ -19,10 +19,12 @@ class Routes {
 class UserDetailArguments {
   final User user;
   final int currentIndex;
+  final bool isFriend;
 
   UserDetailArguments({
     required this.user,
     required this.currentIndex,
+    this.isFriend = false,
   });
 }
 
@@ -52,10 +54,12 @@ class RouteGenerator {
       case Routes.profileRoute:
         if (routeSettings.arguments is UserDetailArguments) {
           final args = routeSettings.arguments as UserDetailArguments;
+
           return MaterialPageRoute(
             builder: (_) => UserDetailPage(
               user: args.user,
               currentIndex: args.currentIndex,
+              isFriend: args.isFriend,
             ),
           );
         }

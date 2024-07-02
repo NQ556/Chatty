@@ -14,4 +14,10 @@ abstract interface class DiscoveryRepository {
     required String currentUserId,
     required String friendId,
   });
+
+  Future<Either<Failure, List<User>>> getFriends({
+    required String currentUserId,
+    required int limit,
+    DocumentSnapshot? lastDocument,
+  });
 }

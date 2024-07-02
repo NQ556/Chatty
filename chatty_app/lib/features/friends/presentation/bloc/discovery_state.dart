@@ -7,10 +7,18 @@ final class DiscoveryInitial extends DiscoveryState {}
 
 final class DiscoveryLoadingState extends DiscoveryState {}
 
-final class DiscoverySuccessState extends DiscoveryState {
+final class GetUsersSuccessState extends DiscoveryState {
   final List<User> users;
 
-  DiscoverySuccessState(
+  GetUsersSuccessState(
+    this.users,
+  );
+}
+
+final class GetFriendsSuccessState extends DiscoveryState {
+  final List<User> users;
+
+  GetFriendsSuccessState(
     this.users,
   );
 }

@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:chatty_app/core/common/entities/user.dart';
-import 'package:chatty_app/features/friends/domain/usecases/discovery_show_new_friends.dart';
+import 'package:chatty_app/features/friends/domain/usecases/discovery_new_friends.dart';
 import 'package:chatty_app/features/friends/domain/usecases/friend_add_friend.dart';
+import 'package:chatty_app/features/friends/domain/usecases/friend_get_friends.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
 
@@ -9,28 +10,32 @@ part 'discovery_event.dart';
 part 'discovery_state.dart';
 
 class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
-  final DiscoveryShowNewFriends _discoveryShowNewFriends;
+  final DiscoveryNewFriends _discoveryShowNewFriends;
   final FriendAddFriend _friendAddFriend;
+  final FriendGetFriends _friendGetFriends;
 
   DiscoveryBloc({
-    required DiscoveryShowNewFriends discoveryShowNewFriends,
+    required DiscoveryNewFriends discoveryShowNewFriends,
     required FriendAddFriend friendAddFriend,
+    required FriendGetFriends friendGetFriends,
   })  : _discoveryShowNewFriends = discoveryShowNewFriends,
         _friendAddFriend = friendAddFriend,
+        _friendGetFriends = friendGetFriends,
         super(DiscoveryInitial()) {
     on<DiscoveryEvent>((_, emit) {
       emit(DiscoveryLoadingState());
     });
-    on<ShowFriendsEvent>(_onShowNewFriends);
+    on<DiscoveryFriendsEvent>(_onDiscoverFriends);
     on<AddFriendEvent>(_onAddFriend);
+    on<GetFriendsEvent>(_onGetFriends);
   }
 
-  void _onShowNewFriends(
-    ShowFriendsEvent event,
+  void _onDiscoverFriends(
+    DiscoveryFriendsEvent event,
     Emitter<DiscoveryState> emit,
   ) async {
     final response = await _discoveryShowNewFriends.call(
-      DiscoveryShowNewFriendsParams(
+      DiscoveryNewFriendsParams(
         currentUserId: event.currentUserId,
         limit: event.limit,
         lastDocument: event.lastDocument,
@@ -62,6 +67,24 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
     );
   }
 
+  void _onGetFriends(
+    GetFriendsEvent event,
+    Emitter<DiscoveryState> emit,
+  ) async {
+    final response = await _friendGetFriends.call(
+      FriendGetFriendsParams(
+        currentUserId: event.currentUserId,
+        limit: event.limit,
+        lastDocument: event.lastDocument,
+      ),
+    );
+
+    response.fold(
+      (failure) => emit(DiscoveryFailureState(failure.message)),
+      (users) => _emitGetFriendsSucces(users, emit),
+    );
+  }
+
   void _emitDiscoverySucces(
     List<User> users,
     Emitter<DiscoveryState> emit,
@@ -69,7 +92,18 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
     if (users.isEmpty) {
       emit(DiscoveryEmptyState());
     } else {
-      emit(DiscoverySuccessState(users));
+      emit(GetUsersSuccessState(users));
+    }
+  }
+
+  void _emitGetFriendsSucces(
+    List<User> users,
+    Emitter<DiscoveryState> emit,
+  ) {
+    if (users.isEmpty) {
+      emit(DiscoveryEmptyState());
+    } else {
+      emit(GetFriendsSuccessState(users));
     }
   }
 }

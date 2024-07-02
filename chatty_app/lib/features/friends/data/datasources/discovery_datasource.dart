@@ -13,6 +13,12 @@ abstract interface class DiscoveryDatasource {
     required String currentUserId,
     required String friendId,
   });
+
+  Future<List<UserModel>> getFriends({
+    required String currentUserId,
+    required int limit,
+    DocumentSnapshot? lastDocument,
+  });
 }
 
 class DiscoveryDataSourceImpl implements DiscoveryDatasource {
@@ -107,6 +113,51 @@ class DiscoveryDataSourceImpl implements DiscoveryDatasource {
       await documentReference_2.update({
         'friends': FieldValue.arrayUnion([currentUserId])
       });
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<List<UserModel>> getFriends(
+      {required String currentUserId,
+      required int limit,
+      DocumentSnapshot<Object?>? lastDocument}) async {
+    try {
+      // Get the list of friend IDs
+      List<String> friendIds = await _getCurrentUserFriends(currentUserId);
+
+      if (friendIds.isEmpty) {
+        return [];
+      }
+
+      // Create a query to fetch friends
+      Query query = _firebaseFirestore
+          .collection('users')
+          .where(FieldPath.documentId, whereIn: friendIds)
+          .limit(limit);
+
+      // If lastDocument is provided, start after it for pagination
+      if (lastDocument != null) {
+        query = query.startAfterDocument(lastDocument);
+      }
+
+      // Get all friends
+      final response = await query.get();
+
+      // Check if there are any documents returned
+      if (response.docs.isEmpty) {
+        return [];
+      }
+
+      final friends = response.docs.map((doc) {
+        return UserModel.fromMap(doc.data() as Map<String, dynamic>).copyWith(
+          id: doc.id,
+          documentSnapshot: doc,
+        );
+      }).toList();
+
+      return friends;
     } catch (e) {
       throw ServerException(e.toString());
     }
