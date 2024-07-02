@@ -57,13 +57,12 @@ class _FriendsPageState extends State<FriendsPage> {
         );
   }
 
-  void _onUserPressed(User user, int currentIndex) {
+  void _onUserPressed(User user) {
     Navigator.pushNamed(
       context,
       Routes.profileRoute,
       arguments: UserDetailArguments(
         user: user,
-        currentIndex: currentIndex,
         isFriend: true,
       ),
     );
@@ -83,6 +82,9 @@ class _FriendsPageState extends State<FriendsPage> {
             if (state is GetFriendsSuccessState) {
               users.addAll(state.users);
             }
+          } else if (state is RemoveFriendSuccessState && users.isNotEmpty) {
+            users.clear();
+            _loadMoreUsers();
           }
 
           return Column(
@@ -111,7 +113,7 @@ class _FriendsPageState extends State<FriendsPage> {
                       child: UserDisplay(
                         user: users[index],
                         onTap: () {
-                          _onUserPressed(users[index], index);
+                          _onUserPressed(users[index]);
                         },
                       ),
                     );

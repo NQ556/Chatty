@@ -18,12 +18,12 @@ final class DiscoveryFriendsEvent extends DiscoveryEvent {
 final class AddFriendEvent extends DiscoveryEvent {
   final String currentUserId;
   final String friendId;
-  final int currentIndex;
+  final User friendUser;
 
   AddFriendEvent({
     required this.currentUserId,
     required this.friendId,
-    required this.currentIndex,
+    required this.friendUser,
   });
 }
 
@@ -36,5 +36,17 @@ final class GetFriendsEvent extends DiscoveryEvent {
     required this.currentUserId,
     required this.limit,
     this.lastDocument,
+  });
+}
+
+final class RemoveFriendEvent extends DiscoveryEvent {
+  final String currentUserId;
+  final String friendId;
+  final User friendUser;
+
+  RemoveFriendEvent({
+    required this.currentUserId,
+    required this.friendId,
+    required this.friendUser,
   });
 }

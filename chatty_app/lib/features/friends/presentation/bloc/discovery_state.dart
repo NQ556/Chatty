@@ -31,6 +31,11 @@ final class DiscoveryFailureState extends DiscoveryState {
 }
 
 final class AddFriendSuccessState extends DiscoveryState {
-  final int currentIndex;
-  AddFriendSuccessState(this.currentIndex);
+  final User friendUser;
+  AddFriendSuccessState(this.friendUser);
+}
+
+final class RemoveFriendSuccessState extends DiscoveryState {
+  final User friendUser;
+  RemoveFriendSuccessState(this.friendUser);
 }

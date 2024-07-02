@@ -15,11 +15,9 @@ class UserDetailPage extends StatefulWidget {
     super.key,
     required this.user,
     this.isFriend = false,
-    required this.currentIndex,
   });
   final User user;
   final bool isFriend;
-  final int currentIndex;
 
   @override
   State<UserDetailPage> createState() => _UserDetailPageState();
@@ -40,6 +38,8 @@ class _UserDetailPageState extends State<UserDetailPage> {
   }
 
   void _addFriend() {
+    print("LLLLLLLLLL");
+    print(_isFriend);
     final currentUser =
         (context.read<AppUserCubit>().state as AppUserSignedIn).user;
 
@@ -47,14 +47,38 @@ class _UserDetailPageState extends State<UserDetailPage> {
           AddFriendEvent(
             currentUserId: currentUser.id,
             friendId: widget.user.id,
-            currentIndex: widget.currentIndex,
+            friendUser: widget.user,
           ),
         );
+
+    Navigator.of(context).pop();
+  }
+
+  void _removeFriend() async {
+    print("LLLLLLLLLL");
+    print(_isFriend);
+    final currentUser =
+        (context.read<AppUserCubit>().state as AppUserSignedIn).user;
+
+    context.read<DiscoveryBloc>().add(
+          RemoveFriendEvent(
+            currentUserId: currentUser.id,
+            friendId: widget.user.id,
+            friendUser: widget.user,
+          ),
+        );
+
+    Navigator.of(context).pop();
   }
 
   void _onFriendPressed() {
+    print("LLLLLLLLLL");
+    print(_isFriend);
+
     if (!widget.isFriend) {
       _addFriend();
+    } else {
+      _removeFriend();
     }
 
     setState(() {

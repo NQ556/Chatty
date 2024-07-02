@@ -20,4 +20,9 @@ abstract interface class DiscoveryRepository {
     required int limit,
     DocumentSnapshot? lastDocument,
   });
+
+  Future<Either<Failure, void>> removeFriend({
+    required String currentUserId,
+    required String friendId,
+  });
 }

@@ -21,6 +21,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
   final searchController = TextEditingController();
   final scrollController = ScrollController();
   List<User> users = [];
+  bool canAdd = false;
 
   @override
   void initState() {
@@ -66,12 +67,12 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
   }
 
   void _onUserPressed(User user, int currentIndex) {
+    canAdd = true;
     Navigator.pushNamed(
       context,
       Routes.profileRoute,
       arguments: UserDetailArguments(
         user: user,
-        currentIndex: currentIndex,
       ),
     );
   }
@@ -89,9 +90,12 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
           if (state is GetUsersSuccessState || state is DiscoveryEmptyState) {
             if (state is GetUsersSuccessState) {
               users.addAll(state.users);
+              print("IIIIIIIIIIIII");
+              print(state.users.length);
             }
           } else if (state is AddFriendSuccessState && users.isNotEmpty) {
-            users.removeAt(state.currentIndex);
+            users.clear();
+            _loadMoreUsers();
           }
 
           return Column(

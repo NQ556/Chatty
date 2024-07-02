@@ -63,4 +63,21 @@ class DiscoveryRepositoryImpl implements DiscoveryRepository {
       return left(Failure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> removeFriend({
+    required String currentUserId,
+    required String friendId,
+  }) async {
+    try {
+      await discoveryDatasource.removeFriend(
+        currentUserId: currentUserId,
+        friendId: friendId,
+      );
+
+      return right(unit);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
 }

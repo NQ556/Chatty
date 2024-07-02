@@ -19,6 +19,11 @@ abstract interface class DiscoveryDatasource {
     required int limit,
     DocumentSnapshot? lastDocument,
   });
+
+  Future<void> removeFriend({
+    required String currentUserId,
+    required String friendId,
+  });
 }
 
 class DiscoveryDataSourceImpl implements DiscoveryDatasource {
@@ -158,6 +163,27 @@ class DiscoveryDataSourceImpl implements DiscoveryDatasource {
       }).toList();
 
       return friends;
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> removeFriend(
+      {required String currentUserId, required String friendId}) async {
+    try {
+      DocumentReference currentUserDoc =
+          _firebaseFirestore.collection('users').doc(currentUserId);
+      DocumentReference friendDoc =
+          _firebaseFirestore.collection('users').doc(friendId);
+
+      await currentUserDoc.update({
+        'friends': FieldValue.arrayRemove([friendId]),
+      });
+
+      await friendDoc.update({
+        'friends': FieldValue.arrayRemove([currentUserId]),
+      });
     } catch (e) {
       throw ServerException(e.toString());
     }
