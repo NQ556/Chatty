@@ -27,11 +27,7 @@ class _FriendsPageState extends State<FriendsPage> {
     super.initState();
     scrollController.addListener(_onScroll);
 
-    final state = context.read<DiscoveryBloc>().state;
-
-    if (!(state is GetFriendsSuccessState)) {
-      _loadMoreUsers();
-    }
+    context.read<DiscoveryBloc>().add(ReloadEvent());
   }
 
   void _onScroll() {
@@ -75,18 +71,20 @@ class _FriendsPageState extends State<FriendsPage> {
         listener: (context, state) {
           if (state is DiscoveryFailureState) {
             showSnackBar(context, state.message);
-          }
-        },
-        builder: (context, state) {
-          if (state is GetFriendsSuccessState || state is DiscoveryEmptyState) {
+          } else if (state is GetFriendsSuccessState ||
+              state is DiscoveryEmptyState) {
             if (state is GetFriendsSuccessState) {
               users.addAll(state.users);
             }
           } else if (state is RemoveFriendSuccessState && users.isNotEmpty) {
             users.clear();
             _loadMoreUsers();
+          } else if (state is NoState) {
+            users.clear();
+            _loadMoreUsers();
           }
-
+        },
+        builder: (context, state) {
           return Column(
             children: [
               // Search

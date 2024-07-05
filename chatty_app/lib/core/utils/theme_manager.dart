@@ -25,6 +25,11 @@ ThemeData getApplicationTheme() {
         fontFamily: FontFamilyConstants.fontFamily_2,
         fontSize: 24,
       ),
+      displaySmall: TextStyle(
+        fontFamily: FontFamilyConstants.fontFamily_2,
+        fontSize: 13,
+        color: Colors.black54,
+      ),
     ),
   );
 }

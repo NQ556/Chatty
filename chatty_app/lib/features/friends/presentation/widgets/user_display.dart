@@ -48,6 +48,15 @@ class UserDisplay extends StatelessWidget {
                     user.email,
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
+                  Text(
+                    user.isOnline
+                        ? StringManager.online
+                        : StringManager.offline,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontWeight: FontWeightManager.bold,
+                          color: user.isOnline ? Colors.green : Colors.grey,
+                        ),
+                  ),
                 ],
               ),
             ],

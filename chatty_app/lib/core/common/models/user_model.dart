@@ -13,6 +13,7 @@ class UserModel extends User {
     required super.description,
     required super.friends,
     super.documentSnapshot,
+    super.isOnline,
   });
 
   factory UserModel.fromUser(FirebaseAuth.User user) {
@@ -23,6 +24,7 @@ class UserModel extends User {
       avatarUrl: '',
       description: '',
       friends: [],
+      isOnline: false,
     );
   }
 
@@ -33,6 +35,7 @@ class UserModel extends User {
       'avatarUrl': avatarUrl,
       'description': description,
       'friends': friends,
+      'isOnline': isOnline,
     };
   }
 
@@ -44,6 +47,7 @@ class UserModel extends User {
       'avatarUrl': avatarUrl,
       'description': description,
       'friends': friends,
+      'isOnline': isOnline,
     };
   }
 
@@ -57,6 +61,7 @@ class UserModel extends User {
       friends: List<String>.from(
         (map['friends'] as List<dynamic>).map((item) => item as String),
       ),
+      isOnline: map['isOnline'] as bool,
     );
   }
 
@@ -73,6 +78,7 @@ class UserModel extends User {
     String? description,
     List<String>? friends,
     DocumentSnapshot? documentSnapshot,
+    bool? isOnline,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -82,6 +88,7 @@ class UserModel extends User {
       description: description ?? this.description,
       friends: friends ?? this.friends,
       documentSnapshot: documentSnapshot ?? this.documentSnapshot,
+      isOnline: isOnline ?? this.isOnline,
     );
   }
 }

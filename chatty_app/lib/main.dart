@@ -3,6 +3,7 @@ import 'package:chatty_app/core/utils/route_manager.dart';
 import 'package:chatty_app/core/utils/theme_manager.dart';
 import 'package:chatty_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:chatty_app/features/auth/presentation/pages/sign_in_page.dart';
+import 'package:chatty_app/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:chatty_app/features/friends/presentation/bloc/discovery_bloc.dart';
 import 'package:chatty_app/features/navigation/presentation/bloc/nav_bloc.dart';
 import 'package:chatty_app/features/navigation/presentation/pages/home_page.dart';
@@ -33,6 +34,9 @@ void main() async {
       ),
       BlocProvider(
         create: (_) => getIt<DiscoveryBloc>(),
+      ),
+      BlocProvider(
+        create: (_) => getIt<ChatBloc>(),
       ),
     ],
     child: const MyApp(),

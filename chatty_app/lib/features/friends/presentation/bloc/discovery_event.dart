@@ -50,3 +50,5 @@ final class RemoveFriendEvent extends DiscoveryEvent {
     required this.friendUser,
   });
 }
+
+final class ReloadEvent extends DiscoveryEvent {}

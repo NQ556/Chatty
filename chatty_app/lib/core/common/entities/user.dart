@@ -8,6 +8,7 @@ class User {
   final String description;
   final List<String> friends;
   final DocumentSnapshot? documentSnapshot;
+  bool isOnline;
 
   User({
     required this.id,
@@ -17,5 +18,6 @@ class User {
     required this.description,
     required this.friends,
     this.documentSnapshot,
+    this.isOnline = false,
   });
 }

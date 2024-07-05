@@ -81,6 +81,20 @@ class AuthDataSourceImpl implements AuthDataSource {
     }
   }
 
+  Future<void> _updateOnlineStatus(String userId, bool isOnline) async {
+    try {
+      final userDoc = _firebaseFirestore.collection('users').doc(userId);
+
+      final data = {
+        'isOnline': isOnline,
+      };
+
+      await userDoc.update(data);
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
   @override
   Future<UserModel> signInWithEmail({
     required String email,
@@ -97,6 +111,9 @@ class AuthDataSourceImpl implements AuthDataSource {
       if (response.user == null) {
         throw const ServerException("Null User!");
       }
+
+      // Update online status
+      _updateOnlineStatus(response.user!.uid, true);
 
       return _getUserData(response.user!.uid);
     } catch (e) {
@@ -131,6 +148,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> signOutAccount() async {
     try {
+      _updateOnlineStatus(_firebaseAuth.currentUser!.uid, false);
       await _firebaseAuth.signOut();
     } catch (e) {
       throw ServerException(e.toString());

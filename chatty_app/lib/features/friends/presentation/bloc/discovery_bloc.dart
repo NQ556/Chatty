@@ -33,6 +33,9 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
     on<AddFriendEvent>(_onAddFriend);
     on<GetFriendsEvent>(_onGetFriends);
     on<RemoveFriendEvent>(_onRemoveFriend);
+    on<ReloadEvent>((_, emit) {
+      emit(NoState());
+    });
   }
 
   void _onDiscoverFriends(

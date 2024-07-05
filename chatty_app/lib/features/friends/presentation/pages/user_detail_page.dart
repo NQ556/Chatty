@@ -5,8 +5,10 @@ import 'package:chatty_app/core/common/widgets/description.dart';
 import 'package:chatty_app/core/common/widgets/rounded_button.dart';
 import 'package:chatty_app/core/utils/color_manager.dart';
 import 'package:chatty_app/core/utils/font_manager.dart';
+import 'package:chatty_app/core/utils/route_manager.dart';
 import 'package:chatty_app/core/utils/string_manager.dart';
 import 'package:chatty_app/features/friends/presentation/bloc/discovery_bloc.dart';
+import 'package:chatty_app/features/friends/presentation/widgets/chat_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,9 +39,14 @@ class _UserDetailPageState extends State<UserDetailPage> {
     Navigator.of(context).pop();
   }
 
+  void _onChatPressed() {
+    Navigator.of(context).pushNamed(
+      Routes.chatRoute,
+      arguments: widget.user,
+    );
+  }
+
   void _addFriend() {
-    print("LLLLLLLLLL");
-    print(_isFriend);
     final currentUser =
         (context.read<AppUserCubit>().state as AppUserSignedIn).user;
 
@@ -55,8 +62,6 @@ class _UserDetailPageState extends State<UserDetailPage> {
   }
 
   void _removeFriend() async {
-    print("LLLLLLLLLL");
-    print(_isFriend);
     final currentUser =
         (context.read<AppUserCubit>().state as AppUserSignedIn).user;
 
@@ -72,9 +77,6 @@ class _UserDetailPageState extends State<UserDetailPage> {
   }
 
   void _onFriendPressed() {
-    print("LLLLLLLLLL");
-    print(_isFriend);
-
     if (!widget.isFriend) {
       _addFriend();
     } else {
@@ -150,6 +152,21 @@ class _UserDetailPageState extends State<UserDetailPage> {
                     onTap: _onFriendPressed,
                   ),
                 ),
+
+                //
+                _isFriend
+                    ? Column(
+                        children: [
+                          ChatButton(
+                            buttonText: StringManager.chat,
+                            onTap: _onChatPressed,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      )
+                    : Container(),
 
                 // Description
                 Description(

@@ -28,11 +28,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
     super.initState();
     scrollController.addListener(_onScroll);
 
-    final state = context.read<DiscoveryBloc>().state;
-
-    if (!(state is GetUsersSuccessState)) {
-      _loadMoreUsers();
-    }
+    context.read<DiscoveryBloc>().add(ReloadEvent());
   }
 
   @override
@@ -84,20 +80,20 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
         listener: (context, state) {
           if (state is DiscoveryFailureState) {
             showSnackBar(context, state.message);
-          }
-        },
-        builder: (context, state) {
-          if (state is GetUsersSuccessState || state is DiscoveryEmptyState) {
+          } else if (state is GetUsersSuccessState ||
+              state is DiscoveryEmptyState) {
             if (state is GetUsersSuccessState) {
               users.addAll(state.users);
-              print("IIIIIIIIIIIII");
-              print(state.users.length);
             }
           } else if (state is AddFriendSuccessState && users.isNotEmpty) {
             users.clear();
             _loadMoreUsers();
+          } else if (state is NoState) {
+            users.clear();
+            _loadMoreUsers();
           }
-
+        },
+        builder: (context, state) {
           return Column(
             children: [
               // Search

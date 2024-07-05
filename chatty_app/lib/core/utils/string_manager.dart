@@ -29,4 +29,9 @@ class StringManager {
   static const String search = "Search";
   static const String addFriend = "Add friend";
   static const String unfriend = "Unfriend";
+
+  static const String chat = "Chat";
+  static const String enterText = "Enter text...";
+  static const String online = "Online";
+  static const String offline = "Offline";
 }

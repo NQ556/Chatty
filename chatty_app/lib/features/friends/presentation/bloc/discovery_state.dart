@@ -39,3 +39,5 @@ final class RemoveFriendSuccessState extends DiscoveryState {
   final User friendUser;
   RemoveFriendSuccessState(this.friendUser);
 }
+
+final class NoState extends DiscoveryState {}
