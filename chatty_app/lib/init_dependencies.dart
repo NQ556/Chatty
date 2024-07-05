@@ -16,6 +16,7 @@ import 'package:chatty_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:chatty_app/features/chat/data/datasources/chat_datasource.dart';
 import 'package:chatty_app/features/chat/data/repositories/chat_repository_impl.dart';
 import 'package:chatty_app/features/chat/domain/repositories/chat_repository.dart';
+import 'package:chatty_app/features/chat/domain/usecases/chat_get_all_conversations.dart';
 import 'package:chatty_app/features/chat/domain/usecases/chat_get_all_messages.dart';
 import 'package:chatty_app/features/chat/domain/usecases/chat_send_message.dart';
 import 'package:chatty_app/features/chat/presentation/bloc/chat_bloc.dart';
@@ -228,10 +229,17 @@ void _initChat() {
     ),
   );
 
+  getIt.registerFactory(
+    () => ChatGetAllConversations(
+      getIt(),
+    ),
+  );
+
   getIt.registerLazySingleton(
     () => ChatBloc(
       chatSendMessage: getIt(),
       chatGetAllMessages: getIt(),
+      chatGetAllConversations: getIt(),
     ),
   );
 }

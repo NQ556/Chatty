@@ -30,6 +30,11 @@ ThemeData getApplicationTheme() {
         fontSize: 13,
         color: Colors.black54,
       ),
+      displayMedium: TextStyle(
+        fontFamily: FontFamilyConstants.fontFamily_2,
+        fontSize: 15,
+        color: Colors.black54,
+      ),
     ),
   );
 }

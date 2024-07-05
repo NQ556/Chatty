@@ -95,7 +95,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  void _onGetCurrentUserData(
+  Future<void> _onGetCurrentUserData(
     GetCurrentUserDataEvent event,
     Emitter<AuthState> emit,
   ) async {

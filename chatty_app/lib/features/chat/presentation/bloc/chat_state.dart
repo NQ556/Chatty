@@ -19,3 +19,8 @@ final class GetAllMessagesSuccessState extends ChatState {
   final List<Chat> chats;
   GetAllMessagesSuccessState(this.chats);
 }
+
+class GetConversationsSuccessState extends ChatState {
+  final List<Conversation> conversations;
+  GetConversationsSuccessState(this.conversations);
+}

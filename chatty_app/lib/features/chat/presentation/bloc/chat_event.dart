@@ -24,3 +24,8 @@ final class GetAllMessagesEvent extends ChatEvent {
     required this.friendId,
   });
 }
+
+class GetConversationsEvent extends ChatEvent {
+  final String userId;
+  GetConversationsEvent({required this.userId});
+}
