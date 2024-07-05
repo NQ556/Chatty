@@ -1,5 +1,5 @@
 import 'package:chatty_app/core/common/cubit/app_user_cubit.dart';
-import 'package:chatty_app/core/common/entities/user.dart';
+import 'package:chatty_app/core/common/domain/entities/user.dart';
 import 'package:chatty_app/core/common/functions/show_snackbar.dart';
 import 'package:chatty_app/core/common/widgets/search_box.dart';
 import 'package:chatty_app/core/utils/route_manager.dart';

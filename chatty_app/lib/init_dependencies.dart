@@ -1,4 +1,9 @@
+import 'package:chatty_app/core/common/bloc/online_status_bloc.dart';
 import 'package:chatty_app/core/common/cubit/app_user_cubit.dart';
+import 'package:chatty_app/core/common/data/datasource/status_datasource.dart';
+import 'package:chatty_app/core/common/data/repositories/status_repository_impl.dart';
+import 'package:chatty_app/core/common/domain/repositories/status_repository.dart';
+import 'package:chatty_app/core/common/domain/usecases/status_update.dart';
 import 'package:chatty_app/features/auth/data/datasources/auth_data_source.dart';
 import 'package:chatty_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:chatty_app/features/auth/domain/repositories/auth_repository.dart';
@@ -43,6 +48,7 @@ Future<void> initDependencies() async {
   _initProfile();
   _initDiscovery();
   _initChat();
+  _initStatus();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -226,6 +232,32 @@ void _initChat() {
     () => ChatBloc(
       chatSendMessage: getIt(),
       chatGetAllMessages: getIt(),
+    ),
+  );
+}
+
+void _initStatus() {
+  getIt.registerFactory<StatusDatasource>(
+    () => StatusDatasourceImpl(
+      getIt(),
+    ),
+  );
+
+  getIt.registerFactory<StatusRepository>(
+    () => StatusRepositoryImpl(
+      getIt(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => StatusUpdate(
+      getIt(),
+    ),
+  );
+
+  getIt.registerLazySingleton(
+    () => OnlineStatusBloc(
+      statusUpdate: getIt(),
     ),
   );
 }

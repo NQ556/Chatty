@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:chatty_app/core/common/cubit/app_user_cubit.dart';
-import 'package:chatty_app/core/common/entities/user.dart';
+import 'package:chatty_app/core/common/domain/entities/user.dart';
 import 'package:chatty_app/core/usecase/usecase.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_get_current.dart';
 import 'package:chatty_app/features/auth/domain/usecases/user_reset_password.dart';

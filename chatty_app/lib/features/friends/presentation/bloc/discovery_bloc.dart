@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:chatty_app/core/common/entities/user.dart';
+import 'package:chatty_app/core/common/domain/entities/user.dart';
 import 'package:chatty_app/features/friends/domain/usecases/discovery_new_friends.dart';
 import 'package:chatty_app/features/friends/domain/usecases/friend_add_friend.dart';
 import 'package:chatty_app/features/friends/domain/usecases/friend_get_friends.dart';

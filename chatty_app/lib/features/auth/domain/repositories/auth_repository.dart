@@ -1,4 +1,4 @@
-import 'package:chatty_app/core/common/entities/user.dart';
+import 'package:chatty_app/core/common/domain/entities/user.dart';
 import 'package:chatty_app/core/error/failure.dart';
 import 'package:fpdart/fpdart.dart';
 

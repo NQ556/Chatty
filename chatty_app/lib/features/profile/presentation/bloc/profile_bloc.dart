@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:chatty_app/core/common/cubit/app_user_cubit.dart';
-import 'package:chatty_app/core/common/entities/user.dart';
+import 'package:chatty_app/core/common/domain/entities/user.dart';
 import 'package:chatty_app/features/profile/domain/usecases/profile_update_info.dart';
 import 'package:chatty_app/features/profile/domain/usecases/profile_upload_image.dart';
 import 'package:meta/meta.dart';

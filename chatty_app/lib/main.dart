@@ -1,3 +1,4 @@
+import 'package:chatty_app/core/common/bloc/online_status_bloc.dart';
 import 'package:chatty_app/core/common/cubit/app_user_cubit.dart';
 import 'package:chatty_app/core/utils/route_manager.dart';
 import 'package:chatty_app/core/utils/theme_manager.dart';
@@ -38,6 +39,9 @@ void main() async {
       BlocProvider(
         create: (_) => getIt<ChatBloc>(),
       ),
+      BlocProvider(
+        create: (_) => getIt<OnlineStatusBloc>(),
+      ),
     ],
     child: const MyApp(),
   ));
@@ -50,11 +54,44 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     context.read<AuthBloc>().add(GetCurrentUserDataEvent());
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    final currentUser =
+        (context.read<AppUserCubit>().state as AppUserSignedIn).user;
+
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached ||
+        state == AppLifecycleState.inactive) {
+      context.read<OnlineStatusBloc>().add(
+            UpdateOnlineStatusEvent(
+              userId: currentUser.id,
+              isOnline: false,
+            ),
+          );
+    } else if (state == AppLifecycleState.resumed) {
+      context.read<OnlineStatusBloc>().add(
+            UpdateOnlineStatusEvent(
+              userId: currentUser.id,
+              isOnline: true,
+            ),
+          );
+    }
   }
 
   @override

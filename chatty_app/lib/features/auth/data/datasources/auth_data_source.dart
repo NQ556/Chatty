@@ -1,5 +1,5 @@
 import 'package:chatty_app/core/error/exception.dart';
-import 'package:chatty_app/core/common/models/user_model.dart';
+import 'package:chatty_app/core/common/data/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

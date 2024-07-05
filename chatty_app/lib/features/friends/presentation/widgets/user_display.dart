@@ -1,4 +1,4 @@
-import 'package:chatty_app/core/common/entities/user.dart';
+import 'package:chatty_app/core/common/domain/entities/user.dart';
 import 'package:chatty_app/core/common/widgets/avatar_picture.dart';
 import 'package:chatty_app/core/utils/font_manager.dart';
 import 'package:chatty_app/core/utils/string_manager.dart';

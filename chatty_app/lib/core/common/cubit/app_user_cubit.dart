@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:chatty_app/core/common/entities/user.dart';
+import 'package:chatty_app/core/common/domain/entities/user.dart';
 import 'package:meta/meta.dart';
 
 part 'app_user_state.dart';

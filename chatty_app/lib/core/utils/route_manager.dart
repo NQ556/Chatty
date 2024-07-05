@@ -1,4 +1,4 @@
-import 'package:chatty_app/core/common/entities/user.dart';
+import 'package:chatty_app/core/common/domain/entities/user.dart';
 import 'package:chatty_app/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:chatty_app/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:chatty_app/features/auth/presentation/pages/sign_up_page.dart';

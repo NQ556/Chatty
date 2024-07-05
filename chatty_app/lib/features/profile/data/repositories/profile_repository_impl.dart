@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:chatty_app/core/common/entities/user.dart';
+import 'package:chatty_app/core/common/domain/entities/user.dart';
 import 'package:chatty_app/core/error/exception.dart';
 import 'package:chatty_app/core/error/failure.dart';
 import 'package:chatty_app/features/profile/data/datasources/profile_datasource.dart';
